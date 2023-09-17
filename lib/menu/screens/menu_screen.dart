@@ -23,18 +23,6 @@ class _MenuScreenState extends State<MenuScreen> {
     // _tabController.dispose();
     super.dispose();
   }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final provider = Provider.of<MenuProvider>(context, listen: false);
-      provider.getAllProducts();
-      final category = Provider.of<SettingsProvider>(context, listen: false);
-      category.getAllCategories();
-    });
-    super.initState();
-  }
-
   Tab tabBarValue({required String text, double marginRight = 0}) {
     return Tab(
       child: Container(

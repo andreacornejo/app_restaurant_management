@@ -39,10 +39,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
             create: (context) => SignInSocialNetworkInProvider()),
-        ChangeNotifierProvider(create: (context) => SettingsProvider()),
-        ChangeNotifierProvider(create: (context) => MenuProvider()),
-        ChangeNotifierProvider(create: (context) => StockProvider()),
-        ChangeNotifierProvider(create: (context) => OrderProvider()),
+        ChangeNotifierProvider(create: (context) => SettingsProvider()..getAllEmployees()..getAllCategories()),
+        ChangeNotifierProvider(create: (context) => MenuProvider()..getAllProducts()),
+        ChangeNotifierProvider(create: (context) => StockProvider()..getAllStocks()),
+        ChangeNotifierProvider(create: (context) => OrderProvider()..getAllOrders()),
       ],
       child: MaterialApp(
         title: 'Restaurant Management',

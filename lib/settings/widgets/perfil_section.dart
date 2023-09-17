@@ -1,7 +1,6 @@
 import 'package:app_restaurant_management/constans.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:app_restaurant_management/settings/models/employee_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +30,7 @@ class _PerfilSectionState extends State<PerfilSection> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                 CircleAvatar(
+                CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 45,
                   child: ClipOval(
