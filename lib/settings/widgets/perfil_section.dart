@@ -1,20 +1,28 @@
 import 'package:app_restaurant_management/constans.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
+import 'package:app_restaurant_management/settings/models/employee_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PerfilSection extends StatelessWidget {
+class PerfilSection extends StatefulWidget {
   final String email;
-  const PerfilSection({Key? key, required this.email}) : super(key: key);
+  const PerfilSection({
+    Key? key,
+    required this.email,
+  }) : super(key: key);
 
+  @override
+  State<PerfilSection> createState() => _PerfilSectionState();
+}
+
+class _PerfilSectionState extends State<PerfilSection> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SettingsProvider>(context);
-    final user = provider.listEmployees
-        .where((element) => element.email == email)
-        .toList();
-    String name = user[0].name;
-    String rol = user[0].rol;
+    final EmployeeModel user = provider.listEmployees.where((employee) => employee.email == widget.email).first;
+    String name = user.name;
+    String rol = user.rol;
     return provider.loadingEmployees
         ? Container()
         : Container(
@@ -23,7 +31,7 @@ class PerfilSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
+                 CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 45,
                   child: ClipOval(
@@ -54,16 +62,13 @@ class PerfilSection extends StatelessWidget {
                 Text(
                   rol.toUpperCase(),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: primaryColor),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  email,
+                  widget.email,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 16,

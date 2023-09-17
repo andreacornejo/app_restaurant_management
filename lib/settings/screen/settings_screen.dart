@@ -1,4 +1,6 @@
 // import 'package:app_restaurant_management/home/screens/new_order/new_order_screen.dart';
+import 'dart:math';
+
 import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_confirm.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
@@ -56,11 +58,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: CircularProgressIndicator(),
             )
           : ListView(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 10, bottom: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
               children: [
                 profile(
-                  email: user != null ? user.email : "",
+                  email: user!.email,
                 ),
                 const SizedBox(height: 40),
                 // function(
@@ -75,24 +76,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     text: 'Administracion de empleados',
                     icon: Icons.perm_identity,
                     onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => const EmployeesScreen()));
+                      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const EmployeesScreen()));
                     }),
                 const Divider(),
                 function(
                     text: 'Administracion de categorías',
                     icon: Icons.dashboard,
                     onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => const CategoryScreen()));
+                      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const CategoryScreen()));
                     }),
                 const Divider(),
                 function(
                     text: 'Ordenes canceladas',
                     icon: Icons.do_disturb,
                     onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: (context) => const CanceledOrdersScreen()));
+                      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const CanceledOrdersScreen()));
                     }),
                 const Divider(),
                 function(
@@ -132,16 +130,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   PerfilSection profile({String? email}) {
     return PerfilSection(
-      email: email ?? "-",
+      email: email! ,
     );
   }
 
   // Row functions
-  function(
-      {required String text,
-      required IconData icon,
-      bool arrow = true,
-      required VoidCallback onPressed}) {
+  function({required String text, required IconData icon, bool arrow = true, required VoidCallback onPressed}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       child: InkWell(
