@@ -120,11 +120,11 @@ class _CardFormProductStockState extends State<CardFormProductStock> {
               return null;
             },
             textAlign: TextAlign.right,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               prefixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Text('Bs.', style: textStyleItem)],
+                children: [Text('Bs.', style: textStyleItem)],
               ),
             ),
           ),

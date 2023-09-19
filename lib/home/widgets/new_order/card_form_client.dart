@@ -17,9 +17,9 @@ class _CardFormClientState extends State<CardFormClient> {
   Container title() {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: const [
+        children: [
           Icon(Icons.perm_identity),
           SizedBox(width: 10),
           Text('Datos del Cliente', style: textStyleTitle),
@@ -129,13 +129,13 @@ class _CardFormClientState extends State<CardFormClient> {
             child: TextFormField(
               keyboardType: TextInputType.number,
               textAlign: TextAlign.right,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [Text('Bs.', style: textStyleItem)],
+                  children: [Text('Bs.', style: textStyleItem)],
                 ),
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
               ),
             ),
           ),
@@ -159,13 +159,13 @@ class _CardFormClientState extends State<CardFormClient> {
               enabled: false,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.right,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [Text('Bs.', style: textStyleItem)],
+                  children: [Text('Bs.', style: textStyleItem)],
                 ),
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
               ),
             ),
           ),
@@ -215,9 +215,9 @@ class _CardFormClientState extends State<CardFormClient> {
   Container total() {
     return Container(
         margin: const EdgeInsets.only(top: 10, bottom: 15),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text("Total", style: textStyleTotal),
             Text("Bs. 144", style: textStyleTotalBs)
           ],

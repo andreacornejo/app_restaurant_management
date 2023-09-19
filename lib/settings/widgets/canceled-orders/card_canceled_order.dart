@@ -76,8 +76,8 @@ class CardOrderCancelled extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(Icons.schedule, size: 22, color: redColor),
                 SizedBox(width: 5),
                 Text('Cancelado',

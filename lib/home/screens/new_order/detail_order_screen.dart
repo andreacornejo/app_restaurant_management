@@ -57,9 +57,9 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
   Container total() {
     return Container(
         margin: const EdgeInsets.only(top: 10, bottom: 15),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text("Total", style: textStyleTotal),
             Text("Bs. 144", style: textStyleTotalBs)
           ],

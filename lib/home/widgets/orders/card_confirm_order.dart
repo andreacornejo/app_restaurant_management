@@ -20,8 +20,8 @@ class _CardConfirmState extends State<CardConfirm> {
       children: [
         SizedBox(
             width: MediaQuery.of(context).size.width / 2 * 0.7,
-            child: Row(
-              children: const [
+            child: const Row(
+              children: [
                 Icon(Icons.perm_identity, color: fontGris, size: 24),
                 SizedBox(width: 8),
                 Expanded(
@@ -119,9 +119,9 @@ class _CardConfirmState extends State<CardConfirm> {
             alignment: Alignment.topLeft,
             width: MediaQuery.of(context).size.width / 2 * 0.5,
             margin: const EdgeInsets.only(right: 5),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text('Tablita con queso carne y aderezos',
                     style: textStyleItem,
                     overflow: TextOverflow.ellipsis,
@@ -191,9 +191,9 @@ class _CardConfirmState extends State<CardConfirm> {
   Container total() {
     return Container(
         margin: const EdgeInsets.only(top: 10, bottom: 10),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text("Total", style: textStyleTotal),
             Text("Bs. 144", style: textStyleTotalBs)
           ],
