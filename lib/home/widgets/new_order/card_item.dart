@@ -21,9 +21,9 @@ class _CardItemState extends State<CardItem> {
           alignment: Alignment.topLeft,
           width: MediaQuery.of(context).size.width / 2 * 0.8 - 15,
           margin: const EdgeInsets.only(right: 5),
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text('Tablita con queso carne y aderezos',
                   style: textStyleItem,
                   overflow: TextOverflow.ellipsis,

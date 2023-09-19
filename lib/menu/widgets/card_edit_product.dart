@@ -136,13 +136,13 @@ class _CardEditProductState extends State<CardEditProduct> {
               initialValue: '48',
               keyboardType: TextInputType.number,
               textAlign: TextAlign.right,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 prefixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [Text('Bs.', style: textStyleItem)],
+                  children: [Text('Bs.', style: textStyleItem)],
                 ),
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
               ),
             ),
           ),
