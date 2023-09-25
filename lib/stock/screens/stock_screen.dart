@@ -32,29 +32,29 @@ class _StockScreenState extends State<StockScreen> {
   void dispose() {
     super.dispose();
   }
-@override
+
+  @override
   void initState() {
+    final provider = Provider.of<StockProvider>(context, listen: false);
+    provider.getAllStocks();
     initializeDateFormatting();
     super.initState();
   }
+
   //Tab Bar
   Tab tabBarValue({required String text, double marginRight = 0}) {
     return Tab(
       child: Container(
         alignment: Alignment.center,
         margin: EdgeInsets.only(right: marginRight),
-        padding:
-            const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),
+        padding: const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: focusColor, width: 1),
         ),
         child: Text(
           text,
-          style: const TextStyle(
-              fontFamily: "Work Sans",
-              fontWeight: FontWeight.w500,
-              fontSize: fontSizeRegular),
+          style: const TextStyle(fontFamily: "Work Sans", fontWeight: FontWeight.w500, fontSize: fontSizeRegular),
         ),
       ),
     );
@@ -66,8 +66,7 @@ class _StockScreenState extends State<StockScreen> {
         width: MediaQuery.of(context).size.width / 1,
         height: 40,
         child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             clipBehavior: Clip.antiAliasWithSaveLayer,
             isExtended: true,
             backgroundColor: primaryColor,
@@ -80,8 +79,7 @@ class _StockScreenState extends State<StockScreen> {
                   textAlign: TextAlign.center,
                 )),
             onPressed: () async {
-              await Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => const NewProductStockScreen()));
+              await Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const NewProductStockScreen()));
             }),
       );
 

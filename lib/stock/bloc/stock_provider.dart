@@ -9,13 +9,7 @@ class StockProvider with ChangeNotifier {
 
   List<StockModel> _listStock = [];
 
-  bool _loadingStock = false;
-
-  bool get loadingStock => _loadingStock;
-  set loadingStock(bool state) {
-    _loadingStock = state;
-    notifyListeners();
-  }
+  bool loadingStock = false;
 
   List<StockModel> get listStock => _listStock;
   set listStock(List<StockModel> list) {

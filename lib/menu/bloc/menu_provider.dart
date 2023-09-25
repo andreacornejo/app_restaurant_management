@@ -33,7 +33,7 @@ class MenuProvider with ChangeNotifier {
   bool get loadingProduct => _loadingProduct;
   set loadingProduct(bool state) {
     _loadingProduct = state;
-    notifyListeners();
+    /* notifyListeners(); */
   }
 
   List<ProductModel> get listProduct => _listProduct;

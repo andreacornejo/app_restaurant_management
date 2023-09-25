@@ -19,27 +19,33 @@ class _MenuScreenState extends State<MenuScreen> {
   // late TabController _tabController;
 
   @override
+  void initState() {
+    super.initState();
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    final categoryProvider = Provider.of<SettingsProvider>(context, listen: false);
+    menuProvider.getAllProducts();
+    categoryProvider.getAllCategories();
+  }
+
+  @override
   void dispose() {
     // _tabController.dispose();
     super.dispose();
   }
+
   Tab tabBarValue({required String text, double marginRight = 0}) {
     return Tab(
       child: Container(
         alignment: Alignment.center,
         margin: EdgeInsets.only(right: marginRight),
-        padding:
-            const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),
+        padding: const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: focusColor, width: 1),
         ),
         child: Text(
           text,
-          style: const TextStyle(
-              fontFamily: "Work Sans",
-              fontWeight: FontWeight.w500,
-              fontSize: fontSizeRegular),
+          style: const TextStyle(fontFamily: "Work Sans", fontWeight: FontWeight.w500, fontSize: fontSizeRegular),
         ),
       ),
     );
@@ -51,8 +57,7 @@ class _MenuScreenState extends State<MenuScreen> {
         width: MediaQuery.of(context).size.width / 1,
         height: 40,
         child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             clipBehavior: Clip.antiAliasWithSaveLayer,
             isExtended: true,
             backgroundColor: primaryColor,
@@ -65,8 +70,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   textAlign: TextAlign.center,
                 )),
             onPressed: () async {
-              await Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => const NewProductScreen()));
+              await Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const NewProductScreen()));
             }),
       );
 
@@ -78,8 +82,7 @@ class _MenuScreenState extends State<MenuScreen> {
       length: category.listCategory.length,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(120.0), // here the desired height
+          preferredSize: const Size.fromHeight(120.0), // here the desired height
           child: Stack(
             alignment: const Alignment(1, 0.9),
             children: [
@@ -104,11 +107,9 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: Column(
                       children: [
                         TabBar(
-                          labelPadding:
-                              const EdgeInsets.only(left: 5, right: 5),
+                          labelPadding: const EdgeInsets.only(left: 5, right: 5),
                           isScrollable: true,
-                          padding: const EdgeInsets.only(
-                              bottom: 5, left: 5, right: 5),
+                          padding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
                           unselectedLabelColor: Colors.black,
                           indicatorWeight: 0,
                           indicatorSize: TabBarIndicatorSize.label,
@@ -119,8 +120,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           tabs:
                               // tabMaker(category)
                               [
-                            for (var listCategory in category.listCategory)
-                              tabBarValue(text: listCategory.name),
+                            for (var listCategory in category.listCategory) tabBarValue(text: listCategory.name),
                           ],
                         ),
                       ],
@@ -158,8 +158,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     [
                   for (var listCategory in category.listCategory)
                     // ProductsMenuScreen(provider: provider),
-                    ProductsMenuScreen(
-                        provider: provider, category: listCategory.name),
+                    ProductsMenuScreen(provider: provider, category: listCategory.name),
                 ],
               ),
         floatingActionButton: floatButton(),

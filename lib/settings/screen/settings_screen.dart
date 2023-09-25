@@ -20,6 +20,15 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
+  void initState() {
+    final provider = Provider.of<SettingsProvider>(context, listen: false);
+    provider
+      ..getAllCategories()
+      ..getAllEmployees();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final auth = Provider.of<SignInSocialNetworkInProvider>(context);
     final user = FirebaseAuth.instance.currentUser;

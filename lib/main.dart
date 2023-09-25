@@ -23,6 +23,7 @@ void main() async {
   runApp(Phoenix(child: const MyApp()));
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   OutlineInputBorder borderInput({Color color = Colors.black}) {
@@ -37,12 +38,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-            create: (context) => SignInSocialNetworkInProvider()),
-        ChangeNotifierProvider(create: (context) => SettingsProvider()..getAllEmployees()..getAllCategories()),
-        ChangeNotifierProvider(create: (context) => MenuProvider()..getAllProducts()),
-        ChangeNotifierProvider(create: (context) => StockProvider()..getAllStocks()),
-        ChangeNotifierProvider(create: (context) => OrderProvider()..getAllOrders()),
+        ChangeNotifierProvider(create: (context) => SignInSocialNetworkInProvider()),
+        ChangeNotifierProvider<SettingsProvider>(
+            create: (context) => SettingsProvider()
+              ),
+        ChangeNotifierProvider<MenuProvider>(create: (context) => MenuProvider()),
+        ChangeNotifierProvider<StockProvider>(create: (context) => StockProvider()),
+        ChangeNotifierProvider<OrderProvider>(create: (context) => OrderProvider()),
       ],
       child: MaterialApp(
         title: 'Restaurant Management',
@@ -111,8 +113,7 @@ class _ValidateTokenState extends State<ValidateToken> {
 
   _loadingData() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      var authProvider =
-          Provider.of<SignInSocialNetworkInProvider>(context, listen: false);
+      var authProvider = Provider.of<SignInSocialNetworkInProvider>(context, listen: false);
 
       authProvider.loadingValidate = true;
       var preferencias = await SharedPreferences.getInstance();

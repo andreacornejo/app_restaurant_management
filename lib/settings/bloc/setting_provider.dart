@@ -18,7 +18,7 @@ class SettingsProvider with ChangeNotifier {
   bool get loadingCategories => _loadingCategories;
   set loadingCategories(bool state) {
     _loadingCategories = state;
-    notifyListeners();
+    
   }
 
   List<CategoryModel> get listCategory => _listCategory;
@@ -93,7 +93,7 @@ class SettingsProvider with ChangeNotifier {
   List<EmployeeModel> _listEmployees = [];
   String _name = '';
   String _rol = '';
-  bool _loadingEmployees = false;
+  bool loadingEmployees = false;
 
   List<EmployeeModel> get listEmployees => _listEmployees;
   set listEmployees(List<EmployeeModel> list) {
@@ -110,12 +110,6 @@ class SettingsProvider with ChangeNotifier {
   String get rol => _rol;
   set rol(String state) {
     _rol = state;
-    notifyListeners();
-  }
-
-  bool get loadingEmployees => _loadingEmployees;
-  set loadingEmployees(bool state) {
-    _loadingEmployees = state;
     notifyListeners();
   }
 
