@@ -1,8 +1,8 @@
 import 'package:app_restaurant_management/constans.dart';
 import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/menu/models/product_model.dart';
+import 'package:app_restaurant_management/widgets/button_add.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:provider/provider.dart';
 
 class SectionCardProduct extends StatefulWidget {
@@ -62,33 +62,46 @@ class _SectionCardProductState extends State<SectionCardProduct> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.all(10),
-            width: MediaQuery.of(context).size.width / 4,
-            child: SpinBox(
-              min: 0,
-              decimals: 0,
-              step: 1,
-              max: 100,
-              value: 0,
-              spacing: 0,
-              onSubmitted: (value) => validator = value.toInt(),
-              onChanged: (value) {
-                provider.addProduct(value.toInt(), widget.product);
-                provider.price = before > value
-                    ? provider.price - widget.product.price
-                    : provider.price + widget.product.price;
-              },
-              direction: Axis.horizontal,
-              textStyle: textStyleSpinBoxNumber,
-              incrementIcon:
-                  const Icon(Icons.add, size: 25, color: primaryColor),
-              decrementIcon:
-                  const Icon(Icons.remove, size: 25, color: primaryColor),
-              decoration: decorationSpinBox,
-            ),
+            margin: const EdgeInsets.only(top: 10, bottom: 10),
+            child: Text('Bs. ${(widget.product.price).toStringAsFixed(1)}',
+                style: textStylePriceItem),
           ),
-          Text('Bs. ${(widget.product.price).toStringAsFixed(1)}',
-              style: textStylePriceItem),
+          if (provider.findList(widget.product.id))
+            ButtonAdd(
+              textButton: 'Añadir',
+              onPressed: () {
+                provider.addProduct(1, widget.product);
+                provider.items = provider.items + 1;
+              },
+            )
+          else
+            const Text('Añadido')
+          // Container(
+          //   margin: const EdgeInsets.all(10),
+          //   width: MediaQuery.of(context).size.width / 4,
+          //   child: SpinBox(
+          //     min: 0,
+          //     decimals: 0,
+          //     step: 1,
+          //     max: 100,
+          //     value: 0,
+          //     spacing: 0,
+          //     onSubmitted: (value) => validator = value.toInt(),
+          //     onChanged: (value) {
+          //       provider.addProduct(value.toInt(), widget.product);
+          //       provider.price = before > value
+          //           ? provider.price - widget.product.price
+          //           : provider.price + widget.product.price;
+          //     },
+          //     direction: Axis.horizontal,
+          //     textStyle: textStyleSpinBoxNumber,
+          //     incrementIcon:
+          //         const Icon(Icons.add, size: 25, color: primaryColor),
+          //     decrementIcon:
+          //         const Icon(Icons.remove, size: 25, color: primaryColor),
+          //     decoration: decorationSpinBox,
+          //   ),
+          // ),
         ],
       ),
     );

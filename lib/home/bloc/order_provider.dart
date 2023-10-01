@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/menu/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +15,7 @@ class OrderProvider with ChangeNotifier {
   OrderModel? _currentOrder;
 
   bool _loadingOrder = false;
-  double _price = 0.0;
+  int _items = 0;
 
   List<Product> get listProduct => _listProduct;
 
@@ -38,9 +36,9 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  double get price => _price;
-  set price(double state) {
-    _price = state;
+  int get items => _items;
+  set items(int state) {
+    _items = state;
     notifyListeners();
   }
 
@@ -51,37 +49,16 @@ class OrderProvider with ChangeNotifier {
   }
 
   //metodo para crear una nueva orden
-  Future<void> addOrder(
-      int idOrder,
-      List<Product> products,
-      String status,
-      String note,
-      double discount,
-      String client,
-      String typeOrder,
-      int table,
-      String address,
-      String cellphone,
-      double total) async {
+  Future<void> addOrder(OrderModel order) async {
     var uuid = DateTime.now().microsecondsSinceEpoch.toString();
     try {
       loadingOrder = true;
-      await _db.collection("Order").doc(uuid).set(OrderModel(
-            id: uuid,
-            idOrder: idOrder,
-            date: DateTime.now(),
-            time: DateTime.now(),
-            products: products,
-            discount: discount,
-            note: note,
-            status: status,
-            total: total,
-            client: client,
-            table: table,
-            address: address,
-            cellphone: cellphone,
-            typeOrder: typeOrder,
-          ).toJson());
+      await _db.collection("Order").doc(uuid).set(
+            order.toJson(),
+            // SetOptions(mergeFields: [
+            //   {'id': FieldValue.increment(1)}
+            // ])
+          );
       loadingOrder = false;
     } catch (e) {
       if (kDebugMode) {
@@ -114,8 +91,7 @@ class OrderProvider with ChangeNotifier {
     try {
       loadingOrder = true;
       await _db.collection("Order").doc(id).update(OrderModel(
-            date: DateTime.now(),
-            time: DateTime.now(),
+            dateTime: DateTime.now(),
             status: status,
             noteRejection: noteRejection,
           ).toJson());
@@ -145,7 +121,6 @@ class OrderProvider with ChangeNotifier {
     var item = Product(product: product, quantity: quantity, total: total);
     _listProduct.add(item);
     listProduct = _listProduct;
-    print(listProduct);
   }
 
   double getTotal() {
@@ -162,5 +137,16 @@ class OrderProvider with ChangeNotifier {
     var newProduct = item.copyWith(total: total, quantity: quantity);
     _listProduct[index] = newProduct;
     listProduct = _listProduct;
+  }
+
+  bool findList(String id) {
+    var data =
+        listProduct.where((element) => element.product.id == id).toList();
+    return data.isEmpty;
+  }
+
+  void cleanCurrentOrder() {
+    currentOrder = null;
+    listProduct = [];
   }
 }

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../constans.dart';
 
 class CardNote extends StatefulWidget {
+  final TextEditingController note;
   const CardNote({
     Key? key,
+    required this.note,
   }) : super(key: key);
 
   @override
@@ -27,8 +29,8 @@ class _CardNoteState extends State<CardNote> {
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
             maxLines: 3,
+            controller: widget.note,
             decoration: const InputDecoration(
-              border: OutlineInputBorder(),
               hintText: 'Escribir nota...',
             ),
           ),

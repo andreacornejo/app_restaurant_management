@@ -1,9 +1,22 @@
+import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
 class CardFormClient extends StatefulWidget {
+  final TextEditingController nameClient;
+  final TextEditingController typeOrder;
+  final TextEditingController table;
+  final TextEditingController address;
+  final TextEditingController cellphone;
+
   const CardFormClient({
     Key? key,
+    required this.nameClient,
+    required this.typeOrder,
+    required this.table,
+    required this.address,
+    required this.cellphone,
   }) : super(key: key);
 
   @override
@@ -12,6 +25,8 @@ class CardFormClient extends StatefulWidget {
 
 class _CardFormClientState extends State<CardFormClient> {
   String dropdownValue = 'Servirse en el local';
+  TextEditingController totalPayment = TextEditingController();
+  TextEditingController cash = TextEditingController();
 
   /// Title Datos del Cliente
   Container title() {
@@ -49,9 +64,7 @@ class _CardFormClientState extends State<CardFormClient> {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-            ),
+            controller: widget.nameClient,
           ),
         ),
       ],
@@ -69,15 +82,13 @@ class _CardFormClientState extends State<CardFormClient> {
           Container(
             margin: const EdgeInsets.only(bottom: 10),
             child: DropdownButtonFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
               value: dropdownValue,
               icon: const Icon(Icons.arrow_drop_down),
               style: textStyleItem,
               onChanged: (String? newValue) {
                 setState(() {
                   dropdownValue = newValue!;
+                  widget.typeOrder.text = newValue;
                 });
               },
               items: <String>['Servirse en el local', 'Para llevar', 'Delivery']
@@ -106,9 +117,7 @@ class _CardFormClientState extends State<CardFormClient> {
             margin: const EdgeInsets.only(bottom: 10),
             child: TextFormField(
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+              controller: widget.table,
             ),
           ),
         ],
@@ -129,13 +138,13 @@ class _CardFormClientState extends State<CardFormClient> {
             child: TextFormField(
               keyboardType: TextInputType.number,
               textAlign: TextAlign.right,
+              controller: totalPayment,
               decoration: const InputDecoration(
                 prefixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text('Bs.', style: textStyleItem)],
                 ),
-                border: OutlineInputBorder(),
               ),
             ),
           ),
@@ -145,7 +154,7 @@ class _CardFormClientState extends State<CardFormClient> {
   }
 
   /// Cambio
-  SizedBox cambio() {
+  SizedBox cambio(OrderProvider order) {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 3 - 20,
       child: Column(
@@ -165,7 +174,6 @@ class _CardFormClientState extends State<CardFormClient> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text('Bs.', style: textStyleItem)],
                 ),
-                border: OutlineInputBorder(),
               ),
             ),
           ),
@@ -183,9 +191,7 @@ class _CardFormClientState extends State<CardFormClient> {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-            ),
+            controller: widget.address,
           ),
         ),
       ],
@@ -202,9 +208,7 @@ class _CardFormClientState extends State<CardFormClient> {
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
             keyboardType: TextInputType.phone,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-            ),
+            controller: widget.cellphone,
           ),
         ),
       ],
@@ -212,20 +216,21 @@ class _CardFormClientState extends State<CardFormClient> {
   }
 
   /// Total Order
-  Container total() {
+  Container total(OrderProvider order) {
     return Container(
         margin: const EdgeInsets.only(top: 10, bottom: 15),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Total", style: textStyleTotal),
-            Text("Bs. 144", style: textStyleTotalBs)
+            const Text("Total", style: textStyleTotal),
+            Text("Bs. ${order.getTotal()}", style: textStyleTotalBs)
           ],
         ));
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<OrderProvider>(context);
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
       margin: const EdgeInsets.only(bottom: 25, left: 5, right: 5),
@@ -236,15 +241,20 @@ class _CardFormClientState extends State<CardFormClient> {
           name(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [typeOrder(), Visibility(child: numberTable())],
+            children: [
+              typeOrder(),
+              Visibility(
+                  visible: dropdownValue == 'Servirse en el local',
+                  child: numberTable())
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [totalPagado(), cambio()],
+            children: [totalPagado(), cambio(provider)],
           ),
-          Visibility(child: address()),
-          Visibility(child: cellphone()),
-          total(),
+          Visibility(visible: dropdownValue == 'Delivery', child: address()),
+          Visibility(visible: dropdownValue == 'Delivery', child: cellphone()),
+          total(provider),
         ],
       ),
     );
