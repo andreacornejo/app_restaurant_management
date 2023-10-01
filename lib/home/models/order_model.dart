@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:app_restaurant_management/menu/models/product_model.dart';
+
 OrderModel orderModelFromJson(String str) =>
     OrderModel.fromJson(json.decode(str));
 
@@ -119,41 +121,35 @@ class OrderModel {
 }
 
 class Product {
-  String nameProduct;
-  double price;
+  ProductModel product;
   int quantity;
   double total;
 
   Product({
-    required this.nameProduct,
-    required this.price,
+    required this.product,
     required this.quantity,
     required this.total,
   });
 
   Product copyWith({
-    String? nameProduct,
-    double? price,
+    ProductModel? product,
     int? quantity,
     double? total,
   }) =>
       Product(
-        nameProduct: nameProduct ?? this.nameProduct,
-        price: price ?? this.price,
+        product: product ?? this.product,
         quantity: quantity ?? this.quantity,
         total: total ?? this.total,
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        nameProduct: json["nameProduct"],
-        price: json["price"]?.toDouble(),
+        product: json["product"],
         quantity: json["quantity"],
         total: json["total"]?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
-        "nameProduct": nameProduct,
-        "price": price,
+        "product": product,
         "quantity": quantity,
         "total": total,
       };

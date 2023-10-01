@@ -1,7 +1,9 @@
 import 'package:app_restaurant_management/constans.dart';
+import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/widgets/new_order/card_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class ListItemsOrder extends StatefulWidget {
   const ListItemsOrder({Key? key}) : super(key: key);
@@ -15,11 +17,13 @@ class _ListItemsOrderState extends State<ListItemsOrder> {
 
   @override
   Widget build(BuildContext context) {
+    final data = Provider.of<OrderProvider>(context);
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: items.length,
+        itemCount: data.listProduct.length,
         physics: const ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
+          var item = data.listProduct[index];
           return Dismissible(
             background: Container(
               padding: const EdgeInsets.all(15),
@@ -77,13 +81,16 @@ class _ListItemsOrderState extends State<ListItemsOrder> {
                 },
               );
             },
-            key: ValueKey<int>(items[index]),
+            key: UniqueKey(),
             onDismissed: (DismissDirection direction) {
               setState(() {
                 items.removeAt(index);
               });
             },
-            child: const CardItem(),
+            child: CardItem(
+              product: item,
+              index: index,
+            ),
           );
         });
   }

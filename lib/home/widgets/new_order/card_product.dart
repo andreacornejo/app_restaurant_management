@@ -72,9 +72,12 @@ class _SectionCardProductState extends State<SectionCardProduct> {
               value: 0,
               spacing: 0,
               onSubmitted: (value) => validator = value.toInt(),
-              onChanged: (value) => provider.price = before > value
-                  ? provider.price - widget.product.price
-                  : provider.price + widget.product.price,
+              onChanged: (value) {
+                provider.addProduct(value.toInt(), widget.product);
+                provider.price = before > value
+                    ? provider.price - widget.product.price
+                    : provider.price + widget.product.price;
+              },
               direction: Axis.horizontal,
               textStyle: textStyleSpinBoxNumber,
               incrementIcon:
