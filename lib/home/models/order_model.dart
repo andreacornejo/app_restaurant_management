@@ -14,8 +14,7 @@ String orderModelToJson(OrderModel data) => json.encode(data.toJson());
 class OrderModel {
   String id;
   int idOrder;
-  DateTime date;
-  DateTime time;
+  DateTime dateTime;
   List<Product>? products;
   double discount;
   String note;
@@ -31,8 +30,7 @@ class OrderModel {
   OrderModel({
     this.id = "",
     this.idOrder = 0,
-    required this.date,
-    required this.time,
+    required this.dateTime,
     this.products,
     this.discount = 0,
     this.note = "",
@@ -66,8 +64,7 @@ class OrderModel {
       OrderModel(
         id: id ?? this.id,
         idOrder: idOrder ?? this.idOrder,
-        date: date ?? this.date,
-        time: time ?? this.time,
+        dateTime: date ?? dateTime,
         products: products ?? this.products,
         discount: discount ?? this.discount,
         note: note ?? this.note,
@@ -84,8 +81,7 @@ class OrderModel {
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json["id"],
         idOrder: json["idOrder"],
-        date: DateTime.parse(json["date"]),
-        time: DateTime.parse(json["time"]),
+        dateTime: DateTime.parse(json["date"]),
         products: List<Product>.from(
             json["products"].map((x) => Product.fromJson(x))),
         discount: json["discount"]?.toDouble() ?? 0,
@@ -104,8 +100,7 @@ class OrderModel {
         "id": id,
         "idOrder": idOrder,
         "date":
-            "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-        "time": time,
+            "${dateTime.year.toString().padLeft(4, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}",
         "products": List<dynamic>.from(products!.map((x) => x.toJson())),
         "discount": discount,
         "note": note,
@@ -149,7 +144,7 @@ class Product {
       );
 
   Map<String, dynamic> toJson() => {
-        "product": product,
+        "product": product.toJson(),
         "quantity": quantity,
         "total": total,
       };

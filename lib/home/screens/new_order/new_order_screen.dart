@@ -24,7 +24,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
       final category = Provider.of<SettingsProvider>(context, listen: false);
       category.getAllCategories();
       final order = Provider.of<OrderProvider>(context, listen: false);
-      order.price = 0;
+      order.cleanCurrentOrder;
     });
     super.initState();
   }
@@ -50,33 +50,45 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   }
 
   // Float Button Agregar Orden
-  Widget floatButton(double price) => Container(
-        padding: const EdgeInsets.only(left: 10, right: 10),
+  Widget floatButton(int item) => Container(
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
         width: MediaQuery.of(context).size.width / 1,
-        height: 40,
-        child: FloatingActionButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          isExtended: true,
-          backgroundColor: primaryColor,
-          child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Text(
-                "PEDIR ORDEN Bs. $price",
-                style: textStyleButton,
-                textAlign: TextAlign.center,
-              )),
-          onPressed: () async {
-            var res = await Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) => const DetailOrderScreen()));
-            if (res == true) {
-              if (context.mounted) {
-                Navigator.of(context).pop(true);
-              }
-            }
-          },
+        color: Colors.white,
+        height: 100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('$item Items seleccionados'),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 3,
+              child: FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                // clipBehavior: Clip.antiAliasWithSaveLayer,
+                // isExtended: true,
+                backgroundColor: primaryColor,
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: const Text(
+                    "Ver Orden",
+                    style: textStyleButton,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                onPressed: () async {
+                  var res = await Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => const DetailOrderScreen()));
+                  if (res == true) {
+                    if (context.mounted) {
+                      Navigator.of(context).pop(true);
+                    }
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       );
 
@@ -148,8 +160,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         provider: provider, category: listCategory.name)
                 ],
               ),
-        floatingActionButton: floatButton(order.price),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        // floatingActionButton: floatButton(order.items),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: floatButton(order.items),
       ),
     );
   }
