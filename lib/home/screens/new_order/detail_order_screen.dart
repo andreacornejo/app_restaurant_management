@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/screens/new_order/form_client_screen.dart';
 import 'package:app_restaurant_management/home/widgets/new_order/card_note.dart';
 import 'package:app_restaurant_management/home/widgets/new_order/list_item.dart';
@@ -8,6 +9,7 @@ import 'package:app_restaurant_management/widgets/button_confirm.dart';
 import 'package:app_restaurant_management/widgets/button_confirm_min.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
 class DetailOrderScreen extends StatefulWidget {
@@ -55,13 +57,14 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
 
   /// Total Order
   Container total() {
+    final data = Provider.of<OrderProvider>(context);
     return Container(
         margin: const EdgeInsets.only(top: 10, bottom: 15),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Total", style: textStyleTotal),
-            Text("Bs. 144", style: textStyleTotalBs)
+            const Text("Total", style: textStyleTotal),
+            Text("Bs.${data.getTotal()}", style: textStyleTotalBs)
           ],
         ));
   }

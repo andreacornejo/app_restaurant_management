@@ -1,12 +1,15 @@
+import 'package:app_restaurant_management/home/bloc/order_provider.dart';
+import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
 class CardItem extends StatefulWidget {
-  const CardItem({
-    Key? key,
-  }) : super(key: key);
-
+  const CardItem({Key? key, required this.product, required this.index})
+      : super(key: key);
+  final Product product;
+  final int index;
   @override
   State<CardItem> createState() => _CardItemState();
 }
@@ -14,6 +17,7 @@ class CardItem extends StatefulWidget {
 class _CardItemState extends State<CardItem> {
   /// Item Product
   Row itemProduct(BuildContext context) {
+    final data = Provider.of<OrderProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -21,15 +25,15 @@ class _CardItemState extends State<CardItem> {
           alignment: Alignment.topLeft,
           width: MediaQuery.of(context).size.width / 2 * 0.8 - 15,
           margin: const EdgeInsets.only(right: 5),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Tablita con queso carne y aderezos',
+              Text(widget.product.product.nameProduct,
                   style: textStyleItem,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2),
               Text(
-                'Bs. 24',
+                'Bs. ${widget.product.product.price}',
                 style: textStyleSubItem,
               ),
             ],
@@ -43,7 +47,7 @@ class _CardItemState extends State<CardItem> {
             decimals: 0,
             step: 1,
             max: 100,
-            value: 0,
+            value: widget.product.quantity.toDouble(),
             spacing: 0,
             direction: Axis.horizontal,
             textStyle: textStyleSpinBoxNumber,
@@ -51,12 +55,15 @@ class _CardItemState extends State<CardItem> {
             decrementIcon:
                 const Icon(Icons.remove, size: 25, color: primaryColor),
             decoration: decorationSpinBox,
+            onChanged: (value) {
+              data.editQuantity(widget.index, value.toInt());
+            },
           ),
         ),
         Container(
             width: MediaQuery.of(context).size.width / 4 - 15,
             alignment: Alignment.topRight,
-            child: const Text("Bs. 40", style: textStylePrice))
+            child: Text("Bs. ${widget.product.total}", style: textStylePrice))
       ],
     );
   }
