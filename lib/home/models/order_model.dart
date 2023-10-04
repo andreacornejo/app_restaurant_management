@@ -13,8 +13,7 @@ String orderModelToJson(OrderModel data) => json.encode(data.toJson());
 
 class OrderModel {
   String id;
-  int idOrder;
-  DateTime dateTime;
+  DateTime? dateTime;
   List<Product>? products;
   double discount;
   String note;
@@ -29,8 +28,7 @@ class OrderModel {
 
   OrderModel({
     this.id = "",
-    this.idOrder = 0,
-    required this.dateTime,
+    this.dateTime,
     this.products,
     this.discount = 0,
     this.note = "",
@@ -47,7 +45,7 @@ class OrderModel {
   OrderModel copyWith({
     String? id,
     int? idOrder,
-    DateTime? date,
+    DateTime? dateTime,
     DateTime? time,
     List<Product>? products,
     double? discount,
@@ -63,8 +61,7 @@ class OrderModel {
   }) =>
       OrderModel(
         id: id ?? this.id,
-        idOrder: idOrder ?? this.idOrder,
-        dateTime: date ?? dateTime,
+        dateTime: dateTime ?? this.dateTime,
         products: products ?? this.products,
         discount: discount ?? this.discount,
         note: note ?? this.note,
@@ -80,8 +77,7 @@ class OrderModel {
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json["id"],
-        idOrder: json["idOrder"],
-        dateTime: DateTime.parse(json["date"]),
+        dateTime: DateTime.tryParse(json["date"]),
         products: List<Product>.from(
             json["products"].map((x) => Product.fromJson(x))),
         discount: json["discount"]?.toDouble() ?? 0,
@@ -98,9 +94,7 @@ class OrderModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "idOrder": idOrder,
-        "date":
-            "${dateTime.year.toString().padLeft(4, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}",
+        "date": dateTime!.toIso8601String(),
         "products": List<dynamic>.from(products!.map((x) => x.toJson())),
         "discount": discount,
         "note": note,
@@ -138,7 +132,7 @@ class Product {
       );
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        product: json["product"],
+        product: ProductModel.fromJson(json['product']),
         quantity: json["quantity"],
         total: json["total"]?.toDouble(),
       );

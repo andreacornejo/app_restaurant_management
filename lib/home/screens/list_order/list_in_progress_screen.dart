@@ -1,32 +1,24 @@
-import 'package:app_restaurant_management/home/widgets/orders/card_order.dart';
-import 'package:flutter/material.dart';
-import '../../../constans.dart';
+// import 'package:app_restaurant_management/home/widgets/orders/card_order.dart';
+// import 'package:flutter/material.dart';
+// import '../../../constans.dart';
 
-class InProgressScreen extends StatefulWidget {
-  const InProgressScreen({Key? key}) : super(key: key);
+// class InProgressScreen extends StatefulWidget {
+//   const InProgressScreen({Key? key}) : super(key: key);
 
-  @override
-  State<InProgressScreen> createState() => _InProgressScreenState();
-}
+//   @override
+//   State<InProgressScreen> createState() => _InProgressScreenState();
+// }
 
-class _InProgressScreenState extends State<InProgressScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(10),
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return const CardOrder(
-          id: 'Orden #001',
-          typeOrder: "d",
-          price: 'Bs. 48',
-          name: 'Adela Canedo',
-          labelState: 'Hace 10 min',
-          colorState: yellowColor,
-          description: '1x Tablita',
-          statusOrder: 'inprogress',
-        );
-      },
-    );
-  }
-}
+// class _InProgressScreenState extends State<InProgressScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       padding: const EdgeInsets.all(10),
+//       itemCount: 10,
+//       itemBuilder: (context, index) {
+//          return  CardOrder(order: provider.listOrders[index],
+//         );
+//       },
+//     );
+//   }
+// }
