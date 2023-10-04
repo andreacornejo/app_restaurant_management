@@ -1,9 +1,13 @@
-import 'package:app_restaurant_management/home/screens/list_order/list_in_progress_screen.dart';
+import 'dart:async';
+
+import 'package:app_restaurant_management/home/bloc/order_provider.dart';
+import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/home/screens/list_order/list_pending_screen.dart';
-import 'package:app_restaurant_management/home/screens/list_order/list_send_screen.dart';
 import 'package:app_restaurant_management/home/widgets/home/float_button.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
 class ListOrdersScreen extends StatefulWidget {
@@ -14,6 +18,31 @@ class ListOrdersScreen extends StatefulWidget {
 }
 
 class _ListOrdersScreenState extends State<ListOrdersScreen> {
+  StreamSubscription? _sub;
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final provider = Provider.of<OrderProvider>(context, listen: false);
+      provider.getAllOrders();
+      _sub = provider.getListOrderStream().listen((event) {
+        // print(event.docs);
+        AudioPlayer().play(AssetSource('sounds/ping.mp3'));
+        var list =
+            event.docs.map((e) => OrderModel.fromJson(e.data())).toList();
+        list.sort(((a, b) => a.dateTime!.compareTo(b.dateTime!)));
+        provider.listOrders = list;
+      });
+    });
+    super.initState();
+  }
+
   // Banner
   banner() {
     return Container(
@@ -77,8 +106,10 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
         body: TabBarView(
           children: const [
             PendingScreen(),
-            InProgressScreen(),
-            SendScreen(),
+            PendingScreen(),
+            PendingScreen(),
+            // InProgressScreen(),
+            // SendScreen(),
           ],
         ),
         floatingActionButton: const FloatButton(),

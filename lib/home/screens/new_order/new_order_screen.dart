@@ -160,8 +160,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         provider: provider, category: listCategory.name)
                 ],
               ),
-        // floatingActionButton: floatButton(order.items),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: floatButton(order.items),
       ),
     );

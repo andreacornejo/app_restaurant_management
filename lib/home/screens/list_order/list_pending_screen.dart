@@ -1,6 +1,7 @@
+import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/widgets/orders/card_order.dart';
 import 'package:flutter/material.dart';
-import '../../../constans.dart';
+import 'package:provider/provider.dart';
 
 class PendingScreen extends StatefulWidget {
   const PendingScreen({Key? key}) : super(key: key);
@@ -12,19 +13,14 @@ class PendingScreen extends StatefulWidget {
 class _PendingScreenState extends State<PendingScreen> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<OrderProvider>(context);
     return ListView.builder(
       padding: const EdgeInsets.all(10),
-      itemCount: 10,
+      itemCount: provider.listOrders.length,
       itemBuilder: (context, index) {
-        return const CardOrder(
-          id: 'Orden #001',
-          typeOrder: "o",
-          price: 'Bs. 48',
-          name: 'Adela Canedo',
-          labelState: 'Hace 10 min',
-          colorState: redColor,
-          description: '1x Tablita',
-          statusOrder: 'pending',
+        return CardOrder(
+          order: provider.listOrders[index],
+          index: index + 1,
         );
       },
     );

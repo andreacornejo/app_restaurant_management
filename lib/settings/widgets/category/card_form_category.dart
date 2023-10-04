@@ -20,7 +20,6 @@ class _CardFormCategoryState extends State<CardFormCategory> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      print(widget.statusController.text);
       if (widget.statusController.text.isNotEmpty) {
         _character = widget.statusController.text == "true"
             ? SingingCharacter.disponible
@@ -29,8 +28,6 @@ class _CardFormCategoryState extends State<CardFormCategory> {
         widget.statusController.text =
             _character == SingingCharacter.disponible ? 'true' : 'false';
       }
-      print('\n********************************');
-      print(_character);
     });
     super.initState();
   }

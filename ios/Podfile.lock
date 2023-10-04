@@ -634,6 +634,8 @@ PODS:
   - AppAuth/Core (1.6.2)
   - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
+  - audioplayers_darwin (0.0.1):
+    - Flutter
   - BoringSSL-GRPC (0.0.24):
     - BoringSSL-GRPC/Implementation (= 0.0.24)
     - BoringSSL-GRPC/Interface (= 0.0.24)
@@ -832,6 +834,9 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - PromisesObjC (2.3.1)
   - SDWebImage (5.17.0):
     - SDWebImage/Core (= 5.17.0)
@@ -844,6 +849,7 @@ PODS:
   - SwiftyGif (5.4.4)
 
 DEPENDENCIES:
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -852,6 +858,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
 
@@ -884,6 +891,8 @@ SPEC REPOS:
     - SwiftyGif
 
 EXTERNAL SOURCES:
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   file_picker:
@@ -900,6 +909,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in_ios/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sign_in_with_apple:
@@ -908,6 +919,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   cloud_firestore: 85d66b543b25130c45258412a39e851e230186e7
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
@@ -936,6 +948,7 @@ SPEC CHECKSUMS:
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126

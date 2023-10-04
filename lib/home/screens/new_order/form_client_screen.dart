@@ -71,7 +71,7 @@ class _FormClienScreenState extends State<FormClienScreen> {
                 var order = provider.currentOrder!.copyWith(
                   client: nameClient.text,
                   products: provider.listProduct,
-                  status: 'Pendiente',
+                  status: 'pending',
                   typeOrder: typeOrder.text,
                   table: int.parse(table.text),
                   address: address.text,

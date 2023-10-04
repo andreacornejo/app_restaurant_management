@@ -42,8 +42,8 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<OrderModel> get listOrder => _listOrders;
-  set listOrder(List<OrderModel> list) {
+  List<OrderModel> get listOrders => _listOrders;
+  set listOrders(List<OrderModel> list) {
     _listOrders = list;
     notifyListeners();
   }
@@ -53,12 +53,7 @@ class OrderProvider with ChangeNotifier {
     var uuid = DateTime.now().microsecondsSinceEpoch.toString();
     try {
       loadingOrder = true;
-      await _db.collection("Order").doc(uuid).set(
-            order.toJson(),
-            // SetOptions(mergeFields: [
-            //   {'id': FieldValue.increment(1)}
-            // ])
-          );
+      await _db.collection("Order").doc(uuid).set(order.toJson());
       loadingOrder = false;
     } catch (e) {
       if (kDebugMode) {
@@ -73,7 +68,7 @@ class OrderProvider with ChangeNotifier {
       loadingOrder = true;
       var res = await _db.collection("Order").get();
       var info = res.docs.map((e) => OrderModel.fromJson(e.data())).toList();
-      listOrder = info;
+      listOrders = info;
       loadingOrder = false;
     } on Exception catch (e) {
       if (kDebugMode) {
@@ -139,14 +134,29 @@ class OrderProvider with ChangeNotifier {
     listProduct = _listProduct;
   }
 
+  //Buscar en la lista los items añadidos
   bool findList(String id) {
     var data =
         listProduct.where((element) => element.product.id == id).toList();
     return data.isEmpty;
   }
 
+  //Limpiar datos de la ultima orden
   void cleanCurrentOrder() {
     currentOrder = null;
     listProduct = [];
+  }
+
+  //Escuchar el cambio de estado en una orden
+  Stream<QuerySnapshot<Map<String, dynamic>>> getListOrderStream() async* {
+    try {
+      var ref = _db.collection('Order').orderBy('date');
+      yield* ref.snapshots();
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+        print("Error al traer estado de la orden");
+      }
+    }
   }
 }
