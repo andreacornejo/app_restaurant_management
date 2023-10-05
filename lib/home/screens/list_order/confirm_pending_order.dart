@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_confirm.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_status.dart';
 import 'package:app_restaurant_management/widgets/button_cancel.dart';
@@ -11,7 +12,13 @@ import '../../../constans.dart';
 
 class ConfirmOrderScreen extends StatefulWidget {
   final String statusOrder;
-  const ConfirmOrderScreen({Key? key, required this.statusOrder})
+  final OrderModel order;
+  final int index;
+  const ConfirmOrderScreen(
+      {Key? key,
+      required this.statusOrder,
+      required this.order,
+      required this.index})
       : super(key: key);
 
   @override
@@ -28,18 +35,17 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         backgroundColor: backgroundColor,
         title: const Text(
           "Confirmar Orden",
-          style: TextStyle(
-            letterSpacing: 0.75,
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.w700,
-            fontSize: fontSizeTitle,
-          ),
+          style: textStyleAppBar,
           textAlign: TextAlign.left,
         ),
       ),
       body: ListView(
         children: [
-          CardConfirm(statusOrder: widget.statusOrder),
+          CardConfirm(
+            statusOrder: widget.statusOrder,
+            order: widget.order,
+            index: widget.index,
+          ),
           Container(
             margin: const EdgeInsets.only(bottom: 20),
             child: Row(
@@ -118,8 +124,9 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                                 Navigator.of(context).pop();
                               },
                             );
-                            return const ModalOrder(
-                              message: 'Orden #001 en preparación',
+                            return ModalOrder(
+                              message:
+                                  'Orden #${widget.index.toString().padLeft(4, '0')} en preparación',
                               image: 'assets/img/confirm-inprogress.svg',
                             );
                           },
