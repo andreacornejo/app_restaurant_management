@@ -23,20 +23,27 @@ class CardOrder extends StatelessWidget {
         onTap: () {
           if (order.status == 'pending') {
             Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) =>
-                    ConfirmOrderScreen(statusOrder: order.status)));
+                builder: (context) => ConfirmOrderScreen(
+                      statusOrder: order.status,
+                      order: order,
+                      index: index,
+                    )));
           }
           if (order.status == 'inprogress') {
             Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) =>
-                    ConfirmOrderInProgressScreen(statusOrder: order.status)));
+                builder: (context) => ConfirmOrderInProgressScreen(
+                      statusOrder: order.status,
+                      order: order,
+                      index: index,
+                    )));
           }
           if (order.status == 'send') {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const ModalOrder(
-                    message: 'Orden #001 entregada',
+                return ModalOrder(
+                    message:
+                        'Orden #${index.toString().padLeft(4, '0')} entregada',
                     image: 'assets/img/order-send.svg');
               },
             );
@@ -57,7 +64,7 @@ class CardOrder extends StatelessWidget {
                           : Icons.restaurant),
                       const SizedBox(width: 5),
                       Text(
-                        "# ${index.toString().padLeft(4, '0')}",
+                        "#${index.toString().padLeft(4, '0')}",
                         style: const TextStyle(
                             letterSpacing: 0.75,
                             fontFamily: "Poppins",

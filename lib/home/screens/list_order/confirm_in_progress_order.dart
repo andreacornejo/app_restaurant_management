@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print
+import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_confirm.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_status.dart';
 import 'package:app_restaurant_management/widgets/button_cancel.dart';
@@ -10,7 +11,13 @@ import '../../../constans.dart';
 
 class ConfirmOrderInProgressScreen extends StatefulWidget {
   final String statusOrder;
-  const ConfirmOrderInProgressScreen({Key? key, required this.statusOrder})
+  final OrderModel order;
+  final int index;
+  const ConfirmOrderInProgressScreen(
+      {Key? key,
+      required this.statusOrder,
+      required this.order,
+      required this.index})
       : super(key: key);
 
   @override
@@ -35,7 +42,11 @@ class _ConfirmOrderInProgressScreenState
       ),
       body: ListView(
         children: [
-          CardConfirm(statusOrder: widget.statusOrder),
+          CardConfirm(
+            statusOrder: widget.statusOrder,
+            order: widget.order,
+            index: widget.index,
+          ),
           Container(
             margin: const EdgeInsets.only(bottom: 20),
             child: Row(
@@ -101,19 +112,11 @@ class _ConfirmOrderInProgressScreenState
                       },
                     );
                     if (res != null) {
-                      ///Evaluar
-                      print(res);
                       if (context.mounted) {
                         await showDialog(
                           context: context,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
-                            Future.delayed(
-                              const Duration(seconds: 3),
-                              () {
-                                Navigator.of(context).pop();
-                              },
-                            );
                             return const ModalOrder(
                               message: 'Orden #001 entregada',
                               image: 'assets/img/confirm-send.svg',

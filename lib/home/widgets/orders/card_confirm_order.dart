@@ -1,11 +1,16 @@
+import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
 
 class CardConfirm extends StatefulWidget {
   final String statusOrder;
+  final OrderModel order;
+  final int index;
   const CardConfirm({
     Key? key,
     required this.statusOrder,
+    required this.order,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -20,14 +25,15 @@ class _CardConfirmState extends State<CardConfirm> {
       children: [
         SizedBox(
             width: MediaQuery.of(context).size.width / 2 * 0.7,
-            child: const Row(
+            child: Row(
               children: [
-                Icon(Icons.perm_identity, color: fontGris, size: 24),
-                SizedBox(width: 8),
+                const Icon(Icons.perm_identity, color: fontGris, size: 24),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    "Adela Canedo Rodriguez Moscoso",
-                    style: TextStyle(color: fontGris, fontSize: fontSizeSmall),
+                    widget.order.client,
+                    style: const TextStyle(
+                        color: fontGris, fontSize: fontSizeSmall),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -101,54 +107,62 @@ class _CardConfirmState extends State<CardConfirm> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            alignment: Alignment.topLeft,
-            child: FadeInImage(
-              width: MediaQuery.of(context).size.width / 2 * 0.33,
-              height: 70,
-              fit: BoxFit.cover,
-              placeholder: const AssetImage("assets/img/background.png"),
-              imageErrorBuilder: (context, error, stackTrace) {
-                return Image.asset("assets/img/background.png");
-              },
-              image: const NetworkImage(
-                  'https://images.unsplash.com/photo-1612871689353-cccf581d667b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
-            ),
-          ),
-          Container(
-            alignment: Alignment.topLeft,
-            width: MediaQuery.of(context).size.width / 2 * 0.5,
-            margin: const EdgeInsets.only(right: 5),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          for (var item in widget.order.products!)
+            // Container(
+            //   alignment: Alignment.topLeft,
+            //   child: FadeInImage(
+            //     width: MediaQuery.of(context).size.width / 2 * 0.33,
+            //     height: 70,
+            //     fit: BoxFit.cover,
+            //     placeholder: const AssetImage("assets/img/background.png"),
+            //     imageErrorBuilder: (context, error, stackTrace) {
+            //       return Image.asset("assets/img/background.png");
+            //     },
+            //     image: const NetworkImage(
+            //         'https://images.unsplash.com/photo-1612871689353-cccf581d667b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
+            //   ),
+            // ),
+            Row(
               children: [
-                Text('Tablita con queso carne y aderezos',
-                    style: textStyleItem,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2),
-                Text(
-                  'Bs. 24',
-                  style: textStyleSubItem,
+                Container(
+                  alignment: Alignment.topLeft,
+                  width: MediaQuery.of(context).size.width / 2,
+                  margin: const EdgeInsets.only(right: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.product.nameProduct,
+                          style: textStyleItem,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2),
+                      Text(
+                        'Bs. ${item.product.price}',
+                        style: textStyleSubItem,
+                      ),
+                    ],
+                  ),
                 ),
+                // for (var item in widget.order.products!)
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 4 - 45,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: buttonBlack),
+                    ),
+                    child: Text(item.quantity.toString(),
+                        style: textStyleQuantity),
+                  ),
+                ),
+                // for (var item in widget.order.products!)
+                Container(
+                    width: MediaQuery.of(context).size.width / 4,
+                    alignment: Alignment.topRight,
+                    child: Text("Bs. ${item.total}", style: textStylePrice))
               ],
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 4 - 45,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: buttonBlack),
-              ),
-              child: const Text('2', style: textStyleQuantity),
-            ),
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width / 4,
-              alignment: Alignment.topRight,
-              child: const Text("Bs. 40", style: textStylePrice))
         ],
       ),
     );
@@ -166,7 +180,7 @@ class _CardConfirmState extends State<CardConfirm> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       child: TextFormField(
-        initialValue: "",
+        initialValue: widget.order.note,
         decoration: const InputDecoration(
           enabled: false,
           border: OutlineInputBorder(),
@@ -191,11 +205,11 @@ class _CardConfirmState extends State<CardConfirm> {
   Container total() {
     return Container(
         margin: const EdgeInsets.only(top: 10, bottom: 10),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Total", style: textStyleTotal),
-            Text("Bs. 144", style: textStyleTotalBs)
+            const Text("Total", style: textStyleTotal),
+            Text("Bs. ${widget.order.total}", style: textStyleTotalBs)
           ],
         ));
   }
@@ -217,8 +231,8 @@ class _CardConfirmState extends State<CardConfirm> {
           itemProduct(context),
           titleNote(),
           textFieldNote(),
-          subTotalDetail('Descuento', 'Bs. 0'),
-          subTotalDetail('Subtotal', 'Bs. 144'),
+          subTotalDetail('Descuento', 'Bs. ${widget.order.discount}'),
+          subTotalDetail('Subtotal', 'Bs. ${widget.order.total}'),
           const SizedBox(height: 10),
           divider,
           total()

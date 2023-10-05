@@ -111,6 +111,7 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
+  //metodo para añadir productos en la lista de una orden
   void addProduct(int quantity, ProductModel product) {
     var total = quantity * product.price;
     var item = Product(product: product, quantity: quantity, total: total);
@@ -118,6 +119,7 @@ class OrderProvider with ChangeNotifier {
     listProduct = _listProduct;
   }
 
+  //metodo para obtener el total de una orden
   double getTotal() {
     var total = 0.0;
     for (var item in listProduct) {
@@ -126,6 +128,7 @@ class OrderProvider with ChangeNotifier {
     return total;
   }
 
+  //metodo para editar el total y cantidad de productos de una lista
   void editQuantity(int index, int quantity) {
     var item = _listProduct[index];
     var total = item.product.price * quantity;
@@ -146,6 +149,9 @@ class OrderProvider with ChangeNotifier {
     currentOrder = null;
     listProduct = [];
   }
+
+  //cambiar el estado de una orden
+  void changeStatusOrder(String status) {}
 
   //Escuchar el cambio de estado en una orden
   Stream<QuerySnapshot<Map<String, dynamic>>> getListOrderStream() async* {
