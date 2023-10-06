@@ -1,4 +1,5 @@
 import 'package:app_restaurant_management/home/models/order_model.dart';
+import 'package:app_restaurant_management/utils/status_time.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
 
@@ -41,26 +42,28 @@ class _CardConfirmState extends State<CardConfirm> {
               ],
             )),
         SizedBox(
+            width: MediaQuery.of(context).size.width / 2,
             child: Row(
-          children: [
-            Icon(
-              Icons.schedule,
-              size: 22,
-              color: widget.statusOrder == 'pending' ? redColor : yellowColor,
-            ),
-            const SizedBox(width: 5),
-            Text(
-              widget.statusOrder == 'pending'
-                  ? 'Hace 10 min - Pendiente'
-                  : 'Hace 10 min - En Curso',
-              style: widget.statusOrder == 'pending'
-                  ? textStyleLabelRed
-                  : textStyleLabelYellow,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        )),
+              children: [
+                Icon(
+                  Icons.schedule,
+                  size: 22,
+                  color:
+                      widget.statusOrder == 'pending' ? redColor : yellowColor,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  widget.statusOrder == 'pending'
+                      ? '${StatusTime.parse(widget.order.dateTime!)} - Pendiente'
+                      : '${StatusTime.parse(widget.order.dateTime!)} - En Curso',
+                  style: widget.statusOrder == 'pending'
+                      ? textStyleLabelRed
+                      : textStyleLabelYellow,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            )),
       ],
     );
   }
@@ -70,8 +73,8 @@ class _CardConfirmState extends State<CardConfirm> {
     return Container(
       margin: const EdgeInsets.only(top: 15, bottom: 7),
       alignment: Alignment.topLeft,
-      child: const Text(
-        "Orden #001",
+      child: Text(
+        "Orden #${widget.index.toString().padLeft(4, '0')}",
         style: textStyleTitle,
         textAlign: TextAlign.left,
       ),
@@ -104,64 +107,51 @@ class _CardConfirmState extends State<CardConfirm> {
   Container itemProduct(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
           for (var item in widget.order.products!)
-            // Container(
-            //   alignment: Alignment.topLeft,
-            //   child: FadeInImage(
-            //     width: MediaQuery.of(context).size.width / 2 * 0.33,
-            //     height: 70,
-            //     fit: BoxFit.cover,
-            //     placeholder: const AssetImage("assets/img/background.png"),
-            //     imageErrorBuilder: (context, error, stackTrace) {
-            //       return Image.asset("assets/img/background.png");
-            //     },
-            //     image: const NetworkImage(
-            //         'https://images.unsplash.com/photo-1612871689353-cccf581d667b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
-            //   ),
-            // ),
-            Row(
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  width: MediaQuery.of(context).size.width / 2,
-                  margin: const EdgeInsets.only(right: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.product.nameProduct,
-                          style: textStyleItem,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2),
-                      Text(
-                        'Bs. ${item.product.price}',
-                        style: textStyleSubItem,
-                      ),
-                    ],
-                  ),
-                ),
-                // for (var item in widget.order.products!)
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 4 - 45,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: buttonBlack),
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    width: MediaQuery.of(context).size.width / 2,
+                    margin: const EdgeInsets.only(right: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(item.product.nameProduct,
+                            style: textStyleItem,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2),
+                        Text(
+                          'Bs. ${item.product.price}',
+                          style: textStyleSubItem,
+                        ),
+                      ],
                     ),
-                    child: Text(item.quantity.toString(),
-                        style: textStyleQuantity),
                   ),
-                ),
-                // for (var item in widget.order.products!)
-                Container(
-                    width: MediaQuery.of(context).size.width / 4,
-                    alignment: Alignment.topRight,
-                    child: Text("Bs. ${item.total}", style: textStylePrice))
-              ],
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 4 - 45,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: buttonBlack),
+                      ),
+                      child: Text(item.quantity.toString(),
+                          style: textStyleQuantity),
+                    ),
+                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width / 4,
+                      alignment: Alignment.topRight,
+                      child: Text("Bs. ${item.total}", style: textStylePrice))
+                ],
+              ),
             ),
         ],
       ),
@@ -226,8 +216,6 @@ class _CardConfirmState extends State<CardConfirm> {
           infoClient(),
           numOrder(),
           subtitles(context),
-          itemProduct(context),
-          itemProduct(context),
           itemProduct(context),
           titleNote(),
           textFieldNote(),

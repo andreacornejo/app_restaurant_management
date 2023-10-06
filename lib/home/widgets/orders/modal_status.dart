@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 enum SingingCharacter { agotado, cerrado, nodisponible }
 
 class ModalStatus extends StatefulWidget {
-  const ModalStatus({Key? key}) : super(key: key);
+  final TextEditingController noteRejection;
+  const ModalStatus({Key? key, required this.noteRejection}) : super(key: key);
 
   @override
   State<ModalStatus> createState() => _ModalStatusState();
@@ -15,6 +16,7 @@ class _ModalStatusState extends State<ModalStatus> {
 
   @override
   Widget build(BuildContext context) {
+    widget.noteRejection.text = 'El producto esta agotado';
     return Dialog(
       child: ModalConfirm(
         message: 'Motivo del rechazo',
@@ -26,7 +28,8 @@ class _ModalStatusState extends State<ModalStatus> {
               groupValue: _character,
               onChanged: (SingingCharacter? value) {
                 setState(() {
-                  _character = value;
+                  _character = value!;
+                  widget.noteRejection.text = 'El producto esta agotado';
                 });
               },
             ),
@@ -36,7 +39,8 @@ class _ModalStatusState extends State<ModalStatus> {
               groupValue: _character,
               onChanged: (SingingCharacter? value) {
                 setState(() {
-                  _character = value;
+                  _character = value!;
+                  widget.noteRejection.text = 'Negocio por cerrar';
                 });
               },
             ),
@@ -46,7 +50,8 @@ class _ModalStatusState extends State<ModalStatus> {
               groupValue: _character,
               onChanged: (SingingCharacter? value) {
                 setState(() {
-                  _character = value;
+                  _character = value!;
+                  widget.noteRejection.text = 'Producto no disponible';
                 });
               },
             ),
