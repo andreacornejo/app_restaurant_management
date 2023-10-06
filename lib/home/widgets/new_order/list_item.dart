@@ -84,6 +84,9 @@ class _ListItemsOrderState extends State<ListItemsOrder> {
               setState(() {
                 provider.deleteProduct(item.product);
                 provider.items = provider.items - 1;
+                if (provider.items == 0) {
+                  Navigator.of(context).pop();
+                }
               });
             },
             child: CardItem(

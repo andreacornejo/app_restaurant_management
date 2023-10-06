@@ -7,7 +7,6 @@ import 'package:app_restaurant_management/home/widgets/new_order/card_note.dart'
 import 'package:app_restaurant_management/home/widgets/new_order/list_item.dart';
 import 'package:app_restaurant_management/widgets/button_cancel.dart';
 import 'package:app_restaurant_management/widgets/button_confirm.dart';
-import 'package:app_restaurant_management/widgets/button_confirm_min.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

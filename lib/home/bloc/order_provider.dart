@@ -16,6 +16,7 @@ class OrderProvider with ChangeNotifier {
 
   bool _loadingOrder = false;
   int _items = 0;
+  double _cash = 0;
 
   List<Product> get listProduct => _listProduct;
 
@@ -39,6 +40,12 @@ class OrderProvider with ChangeNotifier {
   int get items => _items;
   set items(int state) {
     _items = state;
+    notifyListeners();
+  }
+
+  double get cash => _cash;
+  set cash(double state) {
+    _cash = state;
     notifyListeners();
   }
 
@@ -138,6 +145,12 @@ class OrderProvider with ChangeNotifier {
       total += item.total;
     }
     return total;
+  }
+
+  //metodo para obtener el cambio de una orden
+  double getCash(double payment) {
+    cash = payment - getTotal();
+    return cash;
   }
 
   //metodo para editar el total y cantidad de productos de una lista

@@ -25,8 +25,13 @@ class CardFormClient extends StatefulWidget {
 
 class _CardFormClientState extends State<CardFormClient> {
   String dropdownValue = 'Servirse en el local';
-  TextEditingController totalPayment = TextEditingController();
-  TextEditingController cash = TextEditingController();
+  final _totalPayment = TextEditingController();
+  final _cashController = TextEditingController();
+  @override
+  void initState() {
+    widget.typeOrder.text = dropdownValue;
+    super.initState();
+  }
 
   /// Title Datos del Cliente
   Container title() {
@@ -43,18 +48,6 @@ class _CardFormClientState extends State<CardFormClient> {
     );
   }
 
-  /// Subtitle Forms
-  Container titleCardForm(String text) {
-    return Container(
-      alignment: Alignment.topLeft,
-      margin: const EdgeInsets.only(right: 5, bottom: 5),
-      child: Text(
-        text,
-        style: textStyleSubtitle,
-      ),
-    );
-  }
-
   /// Nombre Completo
   Column name() {
     return Column(
@@ -65,6 +58,12 @@ class _CardFormClientState extends State<CardFormClient> {
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
             controller: widget.nameClient,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Escriba el nombre del cliente';
+              }
+              return null;
+            },
           ),
         ),
       ],
@@ -118,6 +117,14 @@ class _CardFormClientState extends State<CardFormClient> {
             child: TextFormField(
               keyboardType: TextInputType.number,
               controller: widget.table,
+              validator: (value) {
+                if (dropdownValue == 'Servirse en el local') {
+                  if (value == null || value.isEmpty) {
+                    return 'Escriba el nro de mesa';
+                  }
+                }
+                return null;
+              },
             ),
           ),
         ],
@@ -126,7 +133,7 @@ class _CardFormClientState extends State<CardFormClient> {
   }
 
   /// Total Pagado
-  SizedBox totalPagado() {
+  SizedBox totalPagado(OrderProvider order) {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 2 + 10,
       child: Column(
@@ -136,9 +143,13 @@ class _CardFormClientState extends State<CardFormClient> {
           Container(
             margin: const EdgeInsets.only(bottom: 10),
             child: TextFormField(
+              onChanged: (value) {
+                _cashController.text =
+                    order.getCash(double.parse(value)).toString();
+              },
               keyboardType: TextInputType.number,
               textAlign: TextAlign.right,
-              controller: totalPayment,
+              controller: _totalPayment,
               decoration: const InputDecoration(
                 prefixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -146,6 +157,15 @@ class _CardFormClientState extends State<CardFormClient> {
                   children: [Text('Bs.', style: textStyleItem)],
                 ),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Anote el total pagado';
+                }
+                if (double.parse(value) < order.getTotal()) {
+                  return 'El monto es menor al total';
+                }
+                return null;
+              },
             ),
           ),
         ],
@@ -164,7 +184,8 @@ class _CardFormClientState extends State<CardFormClient> {
           Container(
             margin: const EdgeInsets.only(bottom: 10),
             child: TextFormField(
-              initialValue: '0',
+              controller: _cashController,
+              // initialValue: order.cash.toString(),
               enabled: false,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.right,
@@ -192,6 +213,14 @@ class _CardFormClientState extends State<CardFormClient> {
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
             controller: widget.address,
+            validator: (value) {
+              if (dropdownValue == 'Delivery') {
+                if (value == null || value.isEmpty) {
+                  return 'Escriba la direccion';
+                }
+              }
+              return null;
+            },
           ),
         ),
       ],
@@ -209,6 +238,14 @@ class _CardFormClientState extends State<CardFormClient> {
           child: TextFormField(
             keyboardType: TextInputType.phone,
             controller: widget.cellphone,
+            validator: (value) {
+              if (dropdownValue == 'Delivery') {
+                if (value == null || value.isEmpty) {
+                  return 'Escriba el número de referencia';
+                }
+              }
+              return null;
+            },
           ),
         ),
       ],
@@ -231,6 +268,7 @@ class _CardFormClientState extends State<CardFormClient> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<OrderProvider>(context);
+
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
       margin: const EdgeInsets.only(bottom: 25, left: 5, right: 5),
@@ -250,7 +288,7 @@ class _CardFormClientState extends State<CardFormClient> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [totalPagado(), cambio(provider)],
+            children: [totalPagado(provider), cambio(provider)],
           ),
           Visibility(visible: dropdownValue == 'Delivery', child: address()),
           Visibility(visible: dropdownValue == 'Delivery', child: cellphone()),
