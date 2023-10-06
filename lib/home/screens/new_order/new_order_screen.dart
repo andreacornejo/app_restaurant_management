@@ -24,7 +24,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
       final category = Provider.of<SettingsProvider>(context, listen: false);
       category.getAllCategories();
       final order = Provider.of<OrderProvider>(context, listen: false);
-      order.cleanCurrentOrder;
+      order.cleanCurrentOrder();
     });
     super.initState();
   }
@@ -65,8 +65,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               child: FloatingActionButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                // clipBehavior: Clip.antiAliasWithSaveLayer,
-                // isExtended: true,
                 backgroundColor: primaryColor,
                 child: Container(
                   alignment: Alignment.center,
@@ -137,8 +135,6 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                           tabs: [
                             for (var listCategory in category.listCategory)
                               tabBarValue(text: listCategory.name),
-                            // tabBarValue(text: 'Platos'),
-                            // tabBarValue(text: 'Bebidas'),
                           ],
                         ),
                       ],
@@ -160,7 +156,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                         provider: provider, category: listCategory.name)
                 ],
               ),
-        bottomNavigationBar: floatButton(order.items),
+        bottomNavigationBar: order.items > 0
+            ? floatButton(order.items)
+            : const SizedBox.shrink(),
       ),
     );
   }

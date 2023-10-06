@@ -77,7 +77,10 @@ class _SectionCardProductState extends State<SectionCardProduct> {
             ButtonAdd(
               unSelect: true,
               textButton: 'Quitar',
-              onPressed: () {},
+              onPressed: () {
+                provider.deleteProduct(widget.product);
+                provider.items = provider.items - 1;
+              },
             )
           // Container(
           //   margin: const EdgeInsets.all(10),

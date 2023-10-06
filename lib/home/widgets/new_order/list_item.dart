@@ -13,17 +13,15 @@ class ListItemsOrder extends StatefulWidget {
 }
 
 class _ListItemsOrderState extends State<ListItemsOrder> {
-  List<int> items = List<int>.generate(3, (int index) => index);
-
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<OrderProvider>(context);
+    final provider = Provider.of<OrderProvider>(context);
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: data.listProduct.length,
+        itemCount: provider.listProduct.length,
         physics: const ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          var item = data.listProduct[index];
+          var item = provider.listProduct[index];
           return Dismissible(
             background: Container(
               padding: const EdgeInsets.all(15),
@@ -84,7 +82,8 @@ class _ListItemsOrderState extends State<ListItemsOrder> {
             key: UniqueKey(),
             onDismissed: (DismissDirection direction) {
               setState(() {
-                items.removeAt(index);
+                provider.deleteProduct(item.product);
+                provider.items = provider.items - 1;
               });
             },
             child: CardItem(

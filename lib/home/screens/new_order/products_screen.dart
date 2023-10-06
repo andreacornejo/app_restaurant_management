@@ -37,11 +37,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),
                     children: [
-                      // Container(
-                      //     margin: const EdgeInsets.only(
-                      //         top: 5, right: 10, left: 10),
-                      //     child: const Text('Carnes de Res',
-                      //         style: textStyleTitle)),
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),

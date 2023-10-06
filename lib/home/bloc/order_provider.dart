@@ -160,6 +160,7 @@ class OrderProvider with ChangeNotifier {
   void cleanCurrentOrder() {
     currentOrder = null;
     listProduct = [];
+    items = 0;
   }
 
   //Escuchar el cambio de estado en una orden
