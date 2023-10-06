@@ -17,7 +17,7 @@ class CardItem extends StatefulWidget {
 class _CardItemState extends State<CardItem> {
   /// Item Product
   Row itemProduct(BuildContext context) {
-    final data = Provider.of<OrderProvider>(context);
+    final provider = Provider.of<OrderProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -56,7 +56,15 @@ class _CardItemState extends State<CardItem> {
                 const Icon(Icons.remove, size: 25, color: primaryColor),
             decoration: decorationSpinBox,
             onChanged: (value) {
-              data.editQuantity(widget.index, value.toInt());
+              provider.editQuantity(widget.index, value.toInt());
+              if (value.toInt() == 0) {
+                var item = provider.listProduct[widget.index];
+                provider.deleteProduct(item.product);
+                provider.items = provider.items - 1;
+              }
+              if (provider.items == 0) {
+                Navigator.of(context).pop();
+              }
             },
           ),
         ),
