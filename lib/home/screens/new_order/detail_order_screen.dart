@@ -98,11 +98,11 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
           const SizedBox(height: 10),
           divider,
           total(),
-          ButtonConfirmMin(
-            padding: 100,
-            textButton: 'Agregar cupon',
-            onPressed: () async {},
-          ),
+          // ButtonConfirmMin(
+          //   padding: 100,
+          //   textButton: 'Agregar cupon',
+          //   onPressed: () async {},
+          // ),
           CardNote(note: note),
           ButtonCancel(
             width: MediaQuery.of(context).size.width / 1,
