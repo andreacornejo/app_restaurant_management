@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print
+import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_confirm.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_status.dart';
@@ -7,6 +8,7 @@ import 'package:app_restaurant_management/widgets/button_confirm.dart';
 import 'package:app_restaurant_management/home/widgets/orders/card_confirm_order.dart';
 import 'package:app_restaurant_management/widgets/modal_order.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
 class ConfirmOrderInProgressScreen extends StatefulWidget {
@@ -27,8 +29,11 @@ class ConfirmOrderInProgressScreen extends StatefulWidget {
 
 class _ConfirmOrderInProgressScreenState
     extends State<ConfirmOrderInProgressScreen> {
+  final TextEditingController noteRejection = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<OrderProvider>(context);
     return Scaffold(
       appBar: AppBar(
         foregroundColor: fontBlack,
@@ -60,23 +65,18 @@ class _ConfirmOrderInProgressScreenState
                       context: context,
                       barrierDismissible: false,
                       builder: (BuildContext context) {
-                        return const ModalStatus();
+                        return ModalStatus(noteRejection: noteRejection);
                       },
                     );
                     if (res != null) {
-                      ///Evaluar
-                      print(res);
+                      await provider.updateOrder(widget.order, 'cancel',
+                          widget.order.id, noteRejection.text);
+                      await provider.getAllOrders();
                       if (context.mounted) {
                         await showDialog(
                           context: context,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
-                            Future.delayed(
-                              const Duration(seconds: 3),
-                              () {
-                                Navigator.of(context).pop();
-                              },
-                            );
                             return const ModalOrder(
                                 message: 'Orden #001 rechazado',
                                 image: 'assets/img/order-cancel.svg');
@@ -112,13 +112,17 @@ class _ConfirmOrderInProgressScreenState
                       },
                     );
                     if (res != null) {
+                      await provider.updateOrder(widget.order, 'send',
+                          widget.order.id, noteRejection.text);
+                      await provider.getAllOrders();
                       if (context.mounted) {
                         await showDialog(
                           context: context,
                           barrierDismissible: false,
                           builder: (BuildContext context) {
-                            return const ModalOrder(
-                              message: 'Orden #001 entregada',
+                            return ModalOrder(
+                              message:
+                                  'Orden #${widget.index.toString().padLeft(4, '0')} entregada',
                               image: 'assets/img/confirm-send.svg',
                             );
                           },

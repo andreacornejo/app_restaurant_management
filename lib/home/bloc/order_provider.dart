@@ -53,7 +53,10 @@ class OrderProvider with ChangeNotifier {
     var uuid = DateTime.now().microsecondsSinceEpoch.toString();
     try {
       loadingOrder = true;
-      await _db.collection("Order").doc(uuid).set(order.toJson());
+      await _db
+          .collection("Order")
+          .doc(uuid)
+          .set(order.copyWith(id: uuid).toJson());
       loadingOrder = false;
     } catch (e) {
       if (kDebugMode) {
@@ -79,17 +82,19 @@ class OrderProvider with ChangeNotifier {
 
   //metodo para actualizar una orden
   Future<void> updateOrder(
+    OrderModel order,
     String status,
     String id,
     String noteRejection,
   ) async {
     try {
       loadingOrder = true;
-      await _db.collection("Order").doc(id).update(OrderModel(
-            dateTime: DateTime.now(),
-            status: status,
-            noteRejection: noteRejection,
-          ).toJson());
+      var newOrder = order.copyWith(
+        dateTime: DateTime.now(),
+        status: status,
+        noteRejection: noteRejection,
+      );
+      await _db.collection("Order").doc(id).update(newOrder.toJson());
       loadingOrder = false;
     } catch (e) {
       if (kDebugMode) {
@@ -116,6 +121,13 @@ class OrderProvider with ChangeNotifier {
     var total = quantity * product.price;
     var item = Product(product: product, quantity: quantity, total: total);
     _listProduct.add(item);
+    listProduct = _listProduct;
+  }
+
+  //metodo para quitar productos en la lista de una orden
+  void deleteProduct(ProductModel product) {
+    _listProduct
+        .removeWhere((item) => item.product.nameProduct == product.nameProduct);
     listProduct = _listProduct;
   }
 
@@ -149,9 +161,6 @@ class OrderProvider with ChangeNotifier {
     currentOrder = null;
     listProduct = [];
   }
-
-  //cambiar el estado de una orden
-  void changeStatusOrder(String status) {}
 
   //Escuchar el cambio de estado en una orden
   Stream<QuerySnapshot<Map<String, dynamic>>> getListOrderStream() async* {

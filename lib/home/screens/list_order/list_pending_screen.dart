@@ -18,7 +18,8 @@ class _PendingScreenState extends State<PendingScreen> {
     final listOrdersToday = provider.listOrders
         .where((element) =>
             element.dateTime.toString().substring(0, 10) ==
-            DateTime.now().toString().substring(0, 10))
+                DateTime.now().toString().substring(0, 10) &&
+            element.status != 'cancel')
         .toList();
     return provider.loadingOrder
         ? const Center(

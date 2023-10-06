@@ -20,7 +20,6 @@ class _SectionCardProductState extends State<SectionCardProduct> {
   bool valorChange = false;
   var validator = 0;
   var before = 0;
-  List<int> listItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +74,11 @@ class _SectionCardProductState extends State<SectionCardProduct> {
               },
             )
           else
-            const Text('Añadido')
+            ButtonAdd(
+              unSelect: true,
+              textButton: 'Quitar',
+              onPressed: () {},
+            )
           // Container(
           //   margin: const EdgeInsets.all(10),
           //   width: MediaQuery.of(context).size.width / 4,
