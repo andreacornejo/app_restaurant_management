@@ -1,8 +1,8 @@
 import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/home/screens/list_order/confirm_in_progress_order.dart';
 import 'package:app_restaurant_management/home/screens/list_order/confirm_pending_order.dart';
+import 'package:app_restaurant_management/home/screens/list_order/detail_order.dart';
 import 'package:app_restaurant_management/utils/status_time.dart';
-import 'package:app_restaurant_management/widgets/modal_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
@@ -38,15 +38,12 @@ class CardOrder extends StatelessWidget {
                     )));
           }
           if (order.status == 'send') {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return ModalOrder(
-                    message:
-                        'Orden #${index.toString().padLeft(4, '0')} entregada',
-                    image: 'assets/img/order-send.svg');
-              },
-            );
+            Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => DetailConfirmOrderScreen(
+                      statusOrder: order.status,
+                      order: order,
+                      index: index,
+                    )));
           }
         },
         child: Column(
@@ -74,7 +71,7 @@ class CardOrder extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    order.total.toString(),
+                    'Bs. ${order.total.toString()}',
                     style: const TextStyle(
                         fontFamily: "Work Sans",
                         fontWeight: FontWeight.w700,
@@ -113,16 +110,11 @@ class CardOrder extends StatelessWidget {
                 const SizedBox(width: 5),
                 Text(StatusTime.parse(order.dateTime!),
                     textAlign: TextAlign.left,
-                    style: TextStyle(
-                        letterSpacing: 0.25,
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w500,
-                        fontSize: fontSizeSmall,
-                        color: order.status == 'pending'
-                            ? redColor
-                            : order.status == 'inprogress'
-                                ? yellowColor
-                                : greenColor))
+                    style: order.status == 'pending'
+                        ? textStyleLabelRed
+                        : order.status == 'inprogress'
+                            ? textStyleLabelYellow
+                            : textStyleLabelGreen)
               ],
             ),
             const SizedBox(height: 7),

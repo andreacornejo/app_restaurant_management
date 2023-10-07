@@ -12,11 +12,6 @@ class SalesScreen extends StatefulWidget {
 }
 
 class _SalesScreenState extends State<SalesScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   final TextEditingController _dateController = TextEditingController();
 
   // void getNacionalByDate(BuildContext context, String date) {

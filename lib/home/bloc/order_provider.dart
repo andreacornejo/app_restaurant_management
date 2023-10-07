@@ -149,7 +149,9 @@ class OrderProvider with ChangeNotifier {
 
   //metodo para obtener el cambio de una orden
   double getCash(double payment) {
-    cash = payment - getTotal();
+    if (payment >= getTotal()) {
+      cash = payment - getTotal();
+    }
     return cash;
   }
 

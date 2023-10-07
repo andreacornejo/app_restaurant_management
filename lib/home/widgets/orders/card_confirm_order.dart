@@ -48,17 +48,24 @@ class _CardConfirmState extends State<CardConfirm> {
                 Icon(
                   Icons.schedule,
                   size: 22,
-                  color:
-                      widget.statusOrder == 'pending' ? redColor : yellowColor,
+                  color: widget.statusOrder == 'pending'
+                      ? redColor
+                      : widget.statusOrder == 'inprogress'
+                          ? yellowColor
+                          : greenColor,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   widget.statusOrder == 'pending'
                       ? '${StatusTime.parse(widget.order.dateTime!)} - Pendiente'
-                      : '${StatusTime.parse(widget.order.dateTime!)} - En Curso',
+                      : widget.statusOrder == 'inprogress'
+                          ? '${StatusTime.parse(widget.order.dateTime!)} - En Curso'
+                          : '${StatusTime.parse(widget.order.dateTime!)} - Entregado',
                   style: widget.statusOrder == 'pending'
                       ? textStyleLabelRed
-                      : textStyleLabelYellow,
+                      : widget.statusOrder == 'inprogress'
+                          ? textStyleLabelYellow
+                          : textStyleLabelGreen,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -4,14 +4,14 @@ import 'package:app_restaurant_management/widgets/empty_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PendingScreen extends StatefulWidget {
-  const PendingScreen({Key? key}) : super(key: key);
-
+class ListOrdersScreen extends StatefulWidget {
+  final String status;
+  const ListOrdersScreen({Key? key, required this.status}) : super(key: key);
   @override
-  State<PendingScreen> createState() => _PendingScreenState();
+  State<ListOrdersScreen> createState() => _ListOrdersScreenState();
 }
 
-class _PendingScreenState extends State<PendingScreen> {
+class _ListOrdersScreenState extends State<ListOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<OrderProvider>(context);
@@ -19,7 +19,8 @@ class _PendingScreenState extends State<PendingScreen> {
         .where((element) =>
             element.dateTime.toString().substring(0, 10) ==
                 DateTime.now().toString().substring(0, 10) &&
-            element.status != 'cancel')
+            element.status != 'cancel' &&
+            element.status == widget.status)
         .toList();
     return provider.loadingOrder
         ? const Center(
