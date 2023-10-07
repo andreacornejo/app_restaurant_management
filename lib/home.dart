@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
   }) : super(key: key);
 
   static const List<Widget> _widgetOptions = [
-    ListOrdersScreen(),
+    OrdersScreen(),
     MenuScreen(),
     SalesScreen(),
     StockScreen(),

@@ -28,13 +28,7 @@ class MenuProvider with ChangeNotifier {
 
   List<ProductModel> _listProduct = [];
 
-  bool _loadingProduct = false;
-
-  bool get loadingProduct => _loadingProduct;
-  set loadingProduct(bool state) {
-    _loadingProduct = state;
-    /* notifyListeners(); */
-  }
+  bool loadingProduct = false;
 
   List<ProductModel> get listProduct => _listProduct;
   set listProduct(List<ProductModel> list) {

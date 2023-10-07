@@ -13,13 +13,7 @@ class SettingsProvider with ChangeNotifier {
 
   List<CategoryModel> _listCategory = [];
 
-  bool _loadingCategories = false;
-
-  bool get loadingCategories => _loadingCategories;
-  set loadingCategories(bool state) {
-    _loadingCategories = state;
-    
-  }
+  bool loadingCategories = false;
 
   List<CategoryModel> get listCategory => _listCategory;
   set listCategory(List<CategoryModel> list) {

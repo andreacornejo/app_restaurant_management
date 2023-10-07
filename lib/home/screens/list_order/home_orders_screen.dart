@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/models/order_model.dart';
-import 'package:app_restaurant_management/home/screens/list_order/list_pending_screen.dart';
+import 'package:app_restaurant_management/home/screens/list_order/list_orders_screen.dart';
 import 'package:app_restaurant_management/home/widgets/home/float_button.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +10,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
-class ListOrdersScreen extends StatefulWidget {
-  const ListOrdersScreen({Key? key}) : super(key: key);
+class OrdersScreen extends StatefulWidget {
+  const OrdersScreen({Key? key}) : super(key: key);
 
   @override
-  State<ListOrdersScreen> createState() => _ListOrdersScreenState();
+  State<OrdersScreen> createState() => _OrdersScreenState();
 }
 
-class _ListOrdersScreenState extends State<ListOrdersScreen> {
+class _OrdersScreenState extends State<OrdersScreen> {
   StreamSubscription? _sub;
 
   @override
@@ -105,9 +105,9 @@ class _ListOrdersScreenState extends State<ListOrdersScreen> {
         // ignore: prefer_const_constructors
         body: TabBarView(
           children: const [
-            PendingScreen(),
-            PendingScreen(),
-            PendingScreen(),
+            ListOrdersScreen(status: 'pending'),
+            ListOrdersScreen(status: 'inprogress'),
+            ListOrdersScreen(status: 'send'),
             // InProgressScreen(),
             // SendScreen(),
           ],
