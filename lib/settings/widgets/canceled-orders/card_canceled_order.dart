@@ -1,19 +1,16 @@
+import 'package:app_restaurant_management/home/models/order_model.dart';
+import 'package:app_restaurant_management/home/screens/list_order/detail_order.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
 
 class CardOrderCancelled extends StatelessWidget {
-  final String id;
-  final String typeOrder;
-  final String price;
-  final String name;
-  final String description;
+  final OrderModel order;
+  final int index;
   const CardOrderCancelled({
     Key? key,
-    required this.id,
-    required this.typeOrder,
-    required this.price,
-    required this.name,
-    required this.description,
+    required this.order,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -23,7 +20,14 @@ class CardOrderCancelled extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 15),
       decoration: boxShadow,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(CupertinoPageRoute(
+              builder: (context) => DetailConfirmOrderScreen(
+                    statusOrder: order.status,
+                    order: order,
+                    index: index,
+                  )));
+        },
         child: Column(
           children: [
             Container(
@@ -34,12 +38,12 @@ class CardOrderCancelled extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(typeOrder == "d"
+                      Icon(order.typeOrder == "delivery"
                           ? Icons.delivery_dining
                           : Icons.restaurant),
                       const SizedBox(width: 5),
                       Text(
-                        id,
+                        "#${index.toString().padLeft(4, '0')}",
                         style: const TextStyle(
                             letterSpacing: 0.75,
                             fontFamily: "Poppins",
@@ -49,7 +53,7 @@ class CardOrderCancelled extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    price,
+                    'Bs. ${order.total}',
                     style: const TextStyle(
                         fontFamily: "Work Sans",
                         fontWeight: FontWeight.w700,
@@ -64,7 +68,7 @@ class CardOrderCancelled extends StatelessWidget {
                 const Icon(Icons.perm_identity, size: 22, color: fontGris),
                 const SizedBox(width: 8),
                 Text(
-                  name,
+                  order.client,
                   textAlign: TextAlign.left,
                   style: const TextStyle(
                       letterSpacing: 0.75,
@@ -96,14 +100,20 @@ class CardOrderCancelled extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(5),
               alignment: Alignment.topLeft,
-              child: Text(
-                description,
-                style: const TextStyle(
-                    letterSpacing: 0.75,
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w400,
-                    fontSize: fontSizeRegular,
-                    color: fontGris),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var item in order.products!)
+                    Text(
+                      '${item.quantity}X ${item.product.nameProduct}',
+                      style: const TextStyle(
+                          letterSpacing: 0.75,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400,
+                          fontSize: fontSizeRegular,
+                          color: fontGris),
+                    ),
+                ],
               ),
             ),
           ],
