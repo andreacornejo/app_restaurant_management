@@ -1,29 +1,25 @@
 import 'package:app_restaurant_management/menu/screens/menu_screen.dart';
-import 'package:app_restaurant_management/sales/screens/sales_sreen.dart';
-import 'package:app_restaurant_management/settings/screen/settings_screen.dart';
-import 'package:app_restaurant_management/stock/screens/stock_screen.dart';
+import 'package:app_restaurant_management/settings/screen/settings_employee_screen.dart';
 import 'package:flutter/material.dart';
-import 'constans.dart';
-import 'home/screens/list_order/home_orders_screen.dart';
+import '../constans.dart';
+import 'screens/list_order/home_orders_screen.dart';
 
-class Home extends StatefulWidget {
-  const Home({
+class HomeChef extends StatefulWidget {
+  const HomeChef({
     Key? key,
   }) : super(key: key);
 
   static const List<Widget> _widgetOptions = [
     OrdersScreen(),
     MenuScreen(),
-    SalesScreen(),
-    StockScreen(),
-    SettingsScreen(),
+    SettingsEmployeeScreen(),
   ];
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeChef> createState() => _HomeChefState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeChefState extends State<HomeChef> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -36,7 +32,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Home._widgetOptions.elementAt(_selectedIndex),
+        child: HomeChef._widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -53,8 +49,6 @@ class _HomeState extends State<Home> {
         items: [
           bottomItem(context, Icons.home, 'Inicio'),
           bottomItem(context, Icons.local_dining, 'Menú'),
-          bottomItem(context, Icons.assessment, 'Ventas'),
-          bottomItem(context, Icons.assignment, 'Gastos'),
           bottomItem(context, Icons.settings, 'Ajustes'),
         ],
         currentIndex: _selectedIndex,

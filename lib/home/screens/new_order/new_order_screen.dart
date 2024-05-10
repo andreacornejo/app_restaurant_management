@@ -114,31 +114,27 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                   textAlign: TextAlign.left,
                 ),
                 bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(30),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      children: [
-                        TabBar(
-                          labelPadding:
-                              const EdgeInsets.only(left: 5, right: 5),
-                          isScrollable: true,
-                          padding: const EdgeInsets.only(
-                              bottom: 5, left: 5, right: 5),
-                          unselectedLabelColor: Colors.black,
-                          indicatorWeight: 0,
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: focusColor,
-                          ),
-                          tabs: [
-                            for (var listCategory in category.listCategory)
-                              tabBarValue(text: listCategory.name),
-                          ],
+                  preferredSize: const Size.fromHeight(0),
+                  child: Column(
+                    children: [
+                      TabBar(
+                        tabAlignment: TabAlignment.start,
+                        labelPadding: const EdgeInsets.only(left: 5, right: 5),
+                        isScrollable: true,
+                        padding:
+                            const EdgeInsets.only(bottom: 5, left: 5, right: 5),
+                        unselectedLabelColor: Colors.black,
+                        indicatorWeight: 0,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: focusColor,
                         ),
-                      ],
-                    ),
+                        tabs: [
+                          for (var listCategory in category.listCategory)
+                            tabBarValue(text: listCategory.name),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),

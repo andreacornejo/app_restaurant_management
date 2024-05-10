@@ -15,7 +15,27 @@ class OptionsView {
 }
 
 List<OptionsView> options = [
-  OptionsView(title: 'Administracion de empleados', icon: Icons.perm_identity , pageRoute: const EmployeesScreen()),
-  OptionsView(title: 'Administracion de categorías', icon:Icons.dashboard , pageRoute: const CategoryScreen()),
-  OptionsView(title: 'Ordenes canceladas', icon: Icons.do_disturb , pageRoute: const CanceledOrdersScreen()),
+  OptionsView(
+      title: 'Administracion de empleados',
+      icon: Icons.perm_identity,
+      pageRoute: const EmployeesScreen()),
+  OptionsView(
+      title: 'Administracion de categorías',
+      icon: Icons.dashboard,
+      pageRoute: const CategoryScreen()),
+  OptionsView(
+      title: 'Ordenes canceladas',
+      icon: Icons.do_disturb,
+      pageRoute: const CanceledOrdersScreen()),
+];
+
+List<OptionsView> optionsCashier = [
+  OptionsView(
+      title: 'Administracion de categorías',
+      icon: Icons.dashboard,
+      pageRoute: const CategoryScreen()),
+  OptionsView(
+      title: 'Ordenes canceladas',
+      icon: Icons.do_disturb,
+      pageRoute: const CanceledOrdersScreen()),
 ];

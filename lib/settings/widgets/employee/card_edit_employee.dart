@@ -22,11 +22,11 @@ class CardFormEditEmployee extends StatefulWidget {
   State<CardFormEditEmployee> createState() => _CardFormEditEmployeeState();
 }
 
-bool _passwordVisible = false;
-
 class _CardFormEditEmployeeState extends State<CardFormEditEmployee> {
   late String imageLink = 'assets/img/cajero.png';
   late String dropdownValue = 'Cajero';
+  bool _passwordVisible = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

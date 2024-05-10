@@ -1,3 +1,7 @@
+import 'package:app_restaurant_management/home/home_admin.dart';
+import 'package:app_restaurant_management/home/home_cashier.dart';
+import 'package:app_restaurant_management/home/home_chef.dart';
+import 'package:app_restaurant_management/home/home_delivery.dart';
 import 'package:app_restaurant_management/settings/models/category_model.dart';
 import 'package:app_restaurant_management/settings/models/employee_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -81,6 +85,21 @@ class SettingsProvider with ChangeNotifier {
       if (kDebugMode) {
         print(e);
       }
+    }
+  }
+
+  Future<Widget> homeRole() async {
+    switch (rol) {
+      case 'Administrador':
+        return const HomeAdmin();
+      case 'Cajero':
+        return const HomeCashier();
+      case 'Cocinero':
+        return const HomeChef();
+      case 'Repartidor':
+        return const HomeDelivery();
+      default:
+        return const HomeCashier();
     }
   }
 
