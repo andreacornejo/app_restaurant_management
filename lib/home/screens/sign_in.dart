@@ -1,5 +1,4 @@
 import 'package:app_restaurant_management/constans.dart';
-import 'package:app_restaurant_management/home.dart';
 import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -202,11 +201,14 @@ class ButtonSignIn extends StatelessWidget {
                   if (provider.isAuth) {
                     await employee.userData(emailController.text);
                     if (employee.status) {
+                      var home = await employee.homeRole();
                       if (context.mounted) {
                         Navigator.pushReplacement(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => const Home()));
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => home,
+                          ),
+                        );
                       }
                     } else {
                       if (context.mounted) {

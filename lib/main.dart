@@ -1,8 +1,11 @@
 // import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
 import 'package:app_restaurant_management/constans.dart';
-import 'package:app_restaurant_management/home.dart';
+import 'package:app_restaurant_management/home/home_admin.dart';
 import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
+import 'package:app_restaurant_management/home/home_cashier.dart';
+import 'package:app_restaurant_management/home/home_chef.dart';
+import 'package:app_restaurant_management/home/home_delivery.dart';
 import 'package:app_restaurant_management/home/screens/sign_in.dart';
 import 'package:app_restaurant_management/menu/bloc/menu_provider.dart';
 import 'package:app_restaurant_management/sales/bloc/sales_provider.dart';
@@ -189,7 +192,18 @@ class _ValidateTokenState extends State<ValidateToken> {
         return const Login();
       } else {
         if (employee.status) {
-          return const Home();
+          switch (employee.rol) {
+            case 'Administrador':
+              return const HomeAdmin();
+            case 'Cajero':
+              return const HomeCashier();
+            case 'Cocinero':
+              return const HomeChef();
+            case 'Repartidor':
+              return const HomeDelivery();
+            default:
+              return const HomeCashier();
+          }
         } else {
           return const Login();
         }

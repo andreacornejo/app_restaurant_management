@@ -4,7 +4,9 @@ import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/home/screens/list_order/list_orders_screen.dart';
 import 'package:app_restaurant_management/home/widgets/home/float_button.dart';
+import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -75,6 +77,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   // Float Button Agregar Orden
   @override
   Widget build(BuildContext context) {
+    final employee = Provider.of<SettingsProvider>(context, listen: false);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -113,7 +116,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
             // SendScreen(),
           ],
         ),
-        floatingActionButton: const FloatButton(),
+        floatingActionButton:
+            employee.rol == 'Administrador' || employee.rol == 'Cajero'
+                ? const FloatButton()
+                : const Offstage(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );

@@ -39,8 +39,7 @@ class _MenuScreenState extends State<MenuScreen> {
       child: Container(
         alignment: Alignment.center,
         margin: EdgeInsets.only(right: marginRight),
-        padding:
-            const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: focusColor, width: 1),
@@ -50,7 +49,7 @@ class _MenuScreenState extends State<MenuScreen> {
           style: const TextStyle(
               fontFamily: "Work Sans",
               fontWeight: FontWeight.w500,
-              fontSize: fontSizeRegular),
+              fontSize: fontSizeSmall),
         ),
       ),
     );
@@ -89,10 +88,8 @@ class _MenuScreenState extends State<MenuScreen> {
       length: category.listCategory.length,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(120.0), // here the desired height
+          preferredSize: const Size.fromHeight(100.0),
           child: Stack(
-            alignment: const Alignment(1, 0.9),
             children: [
               AppBar(
                 elevation: 0,
@@ -109,33 +106,26 @@ class _MenuScreenState extends State<MenuScreen> {
                   ],
                 ),
                 bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(30),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      children: [
-                        TabBar(
-                          labelPadding:
-                              const EdgeInsets.only(left: 5, right: 5),
-                          isScrollable: true,
-                          padding: const EdgeInsets.only(
-                              bottom: 5, left: 5, right: 5),
-                          unselectedLabelColor: Colors.black,
-                          indicatorWeight: 0,
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: focusColor,
-                          ),
-                          tabs:
-                              // tabMaker(category)
-                              [
-                            for (var listCategory in category.listCategory)
-                              tabBarValue(text: listCategory.name),
-                          ],
+                  preferredSize: const Size.fromHeight(0),
+                  child: Column(
+                    children: [
+                      TabBar(
+                        tabAlignment: TabAlignment.start,
+                        labelPadding: const EdgeInsets.only(left: 5, right: 5),
+                        isScrollable: true,
+                        padding:
+                            const EdgeInsets.only(bottom: 5, left: 5, right: 5),
+                        indicatorWeight: 0,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: focusColor,
                         ),
-                      ],
-                    ),
+                        tabs: [
+                          for (var listCategory in category.listCategory)
+                            tabBarValue(text: listCategory.name),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
