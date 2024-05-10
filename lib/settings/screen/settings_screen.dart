@@ -81,10 +81,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 text: data.title,
                                 icon: data.icon,
                                 onPressed: () {
-                                  Navigator.of(context).push(CupertinoPageRoute(builder: (context) => data.pageRoute));
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: (context) => data.pageRoute));
                                 },
                               ),
-                              const Divider()
+                              const Divider(thickness: 0.2)
                             ],
                           );
                         },
@@ -126,7 +127,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   // Row functions
-  function({required String text, required IconData icon, bool arrow = true, required VoidCallback onPressed}) {
+  function(
+      {required String text,
+      required IconData icon,
+      bool arrow = true,
+      required VoidCallback onPressed}) {
     return SizedBox(
       height: 40,
       child: InkWell(

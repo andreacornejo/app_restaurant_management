@@ -27,6 +27,7 @@ class _CardFormNewEmployeeState extends State<CardFormNewEmployee> {
   String dropdownValue = 'Cajero';
   String imageLink = 'assets/img/cajero.png';
   bool valueStatus = true;
+  bool _passwordVisible = false;
 
   @override
   void initState() {
@@ -108,7 +109,21 @@ class _CardFormNewEmployeeState extends State<CardFormNewEmployee> {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
+            obscureText: !_passwordVisible,
             controller: widget.password,
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                  });
+                },
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Escriba la contraseña';

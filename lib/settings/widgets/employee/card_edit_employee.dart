@@ -22,6 +22,8 @@ class CardFormEditEmployee extends StatefulWidget {
   State<CardFormEditEmployee> createState() => _CardFormEditEmployeeState();
 }
 
+bool _passwordVisible = false;
+
 class _CardFormEditEmployeeState extends State<CardFormEditEmployee> {
   late String imageLink = 'assets/img/cajero.png';
   late String dropdownValue = 'Cajero';
@@ -85,7 +87,15 @@ class _CardFormEditEmployeeState extends State<CardFormEditEmployee> {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
+            readOnly: true,
+            enabled: false,
             controller: widget.emailContorller,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.grey),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Escriba el correo';
@@ -107,6 +117,26 @@ class _CardFormEditEmployeeState extends State<CardFormEditEmployee> {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
+              readOnly: true,
+              obscureText: !_passwordVisible,
+              style: const TextStyle(color: Colors.grey),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.red,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                ),
+              ),
               controller: widget.passwordContorller,
               validator: (value) {
                 if (value == null || value.isEmpty) {

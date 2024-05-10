@@ -40,7 +40,7 @@ class _DetailConfirmOrderScreenState extends State<DetailConfirmOrderScreen> {
           CardConfirm(
             statusOrder: widget.statusOrder,
             order: widget.order,
-            index: widget.index,
+            index: widget.index + 1,
           ),
         ],
       ),

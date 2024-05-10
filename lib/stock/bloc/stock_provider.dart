@@ -9,12 +9,52 @@ class StockProvider with ChangeNotifier {
 
   List<StockModel> _listStock = [];
 
+  double _expenses = 0.0;
+
   bool loadingStock = false;
+
+  String _dateStart = DateTime.now().toString();
+  String _dateEnd = DateTime.now().toString();
+
+  init() {
+    listStock = [];
+    loadingStock = false;
+    expenses = 0;
+    dateStart = DateTime.now().toString();
+    dateEnd = DateTime.now().toString();
+  }
+
+  double get expenses => _expenses;
+  set expenses(double state) {
+    _expenses = state;
+    notifyListeners();
+  }
+
+  String get dateStart => _dateStart;
+  set dateStart(String state) {
+    _dateStart = state;
+    notifyListeners();
+  }
+
+  String get dateEnd => _dateEnd;
+  set dateEnd(String state) {
+    _dateEnd = state;
+    notifyListeners();
+  }
 
   List<StockModel> get listStock => _listStock;
   set listStock(List<StockModel> list) {
     _listStock = list;
     notifyListeners();
+  }
+
+  //metodo para obtener el total de todas las ordenes
+  double getTotalExpenses() {
+    for (var stock in listStock) {
+      double total = stock.price;
+      expenses += total;
+    }
+    return expenses;
   }
 
   //metodo para crear una nuevo gasto
@@ -44,7 +84,31 @@ class StockProvider with ChangeNotifier {
   Future<void> getAllStocks() async {
     try {
       loadingStock = true;
-      var res = await _db.collection("Stock").get();
+      var res =
+          await _db.collection("Stock").orderBy('date', descending: true).get();
+      var info = res.docs.map((e) => StockModel.fromJson(e.data())).toList();
+      listStock = info;
+      loadingStock = false;
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  //metodo para listar gasto
+  Future<void> getAllStocksByDate() async {
+    try {
+      loadingStock = true;
+      var res = await _db
+          .collection("Stock")
+          .where('date',
+              isGreaterThanOrEqualTo:
+                  DateTime.parse(dateStart).toIso8601String())
+          .where('date',
+              isLessThanOrEqualTo: DateTime.parse(dateEnd).toIso8601String())
+          .orderBy('date', descending: true)
+          .get();
       var info = res.docs.map((e) => StockModel.fromJson(e.data())).toList();
       listStock = info;
       loadingStock = false;
@@ -88,5 +152,11 @@ class StockProvider with ChangeNotifier {
         print(e);
       }
     }
+  }
+
+  clearListStock() {
+    listStock = [];
+    loadingStock = false;
+    expenses = 0;
   }
 }

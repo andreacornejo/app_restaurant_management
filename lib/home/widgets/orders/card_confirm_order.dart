@@ -44,30 +44,37 @@ class _CardConfirmState extends State<CardConfirm> {
         SizedBox(
             width: MediaQuery.of(context).size.width / 2,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Icon(
                   Icons.schedule,
                   size: 22,
-                  color: widget.statusOrder == 'pending'
+                  color: widget.statusOrder == 'pending' ||
+                          widget.statusOrder == 'cancel'
                       ? redColor
                       : widget.statusOrder == 'inprogress'
                           ? yellowColor
                           : greenColor,
                 ),
                 const SizedBox(width: 5),
-                Text(
-                  widget.statusOrder == 'pending'
-                      ? '${StatusTime.parse(widget.order.dateTime!)} - Pendiente'
-                      : widget.statusOrder == 'inprogress'
-                          ? '${StatusTime.parse(widget.order.dateTime!)} - En Curso'
-                          : '${StatusTime.parse(widget.order.dateTime!)} - Entregado',
-                  style: widget.statusOrder == 'pending'
-                      ? textStyleLabelRed
-                      : widget.statusOrder == 'inprogress'
-                          ? textStyleLabelYellow
-                          : textStyleLabelGreen,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Expanded(
+                  child: Text(
+                    widget.statusOrder == 'pending'
+                        ? '${StatusTime.parse(widget.order.dateTime!)} - Pendiente'
+                        : widget.statusOrder == 'inprogress'
+                            ? '${StatusTime.parse(widget.order.dateTime!)} - En Curso'
+                            : widget.statusOrder == 'send'
+                                ? '${StatusTime.parse(widget.order.dateTime!)} - Entregado'
+                                : '${StatusTime.parse(widget.order.dateTime!)} - Cancelado',
+                    style: widget.statusOrder == 'pending' ||
+                            widget.statusOrder == 'cancel'
+                        ? textStyleLabelRed
+                        : widget.statusOrder == 'inprogress'
+                            ? textStyleLabelYellow
+                            : textStyleLabelGreen,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             )),

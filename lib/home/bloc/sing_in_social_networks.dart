@@ -106,6 +106,7 @@ class SignInSocialNetworkInProvider extends ChangeNotifier {
       if (credential.user != null) {
         var storage = await SharedPreferences.getInstance();
         storage.setString('uid_user', credential.user!.uid);
+        storage.setString('email', emailAddress);
         isAuth = true;
       }
 

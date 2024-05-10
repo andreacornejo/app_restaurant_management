@@ -2,7 +2,6 @@ import 'package:app_restaurant_management/sales/widgets/date_picker.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
 import 'list_sales_screen.dart';
-import 'package:intl/intl.dart';
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({Key? key}) : super(key: key);
@@ -12,30 +11,6 @@ class SalesScreen extends StatefulWidget {
 }
 
 class _SalesScreenState extends State<SalesScreen> {
-  final TextEditingController _dateController = TextEditingController();
-
-  // void getNacionalByDate(BuildContext context, String date) {
-  Future<dynamic> fechaModal(BuildContext context) async {
-    return await showDatePicker(
-      initialEntryMode: DatePickerEntryMode.calendarOnly,
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-      builder: (context, child) => Theme(
-        data: ThemeData().copyWith(
-          colorScheme: const ColorScheme.dark(
-            primary: primaryColor,
-            surface: primaryColor,
-            onPrimary: Colors.white,
-            onSurface: Colors.black,
-          ),
-        ),
-        child: child!,
-      ),
-    );
-  }
-
   //Tab Bar
   Tab tabBarValue({required String text}) {
     return Tab(
@@ -79,100 +54,8 @@ class _SalesScreenState extends State<SalesScreen> {
       body: ListView(
         children: const [
           DatePicker(),
-          // Row(
-          //   children: [
-          //     // calendar(current),
-          //     Container(
-          //       margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-          //       width: MediaQuery.of(context).size.width * 0.4,
-          //       child: TextFormField(
-          //         onTap: () async {
-          //           await fechaModal(context).then((value) {
-          //             if (value != null) {
-          //               setState(() {
-          //                 _dateController.text =
-          //                     DateFormat('dd-MM-yyyy').format(value);
-          //               });
-          //               //     // getNacionalByDate(context, value.toString());
-          //             }
-          //           });
-          //         },
-          //         style: const TextStyle(
-          //           fontFamily: "Poppins",
-          //           fontSize: fontSizeRegular,
-          //           color: Colors.white,
-          //         ),
-          //         controller: _dateController,
-          //         readOnly: true,
-          //         textAlign: TextAlign.center,
-          //         keyboardType: TextInputType.datetime,
-          //         decoration: InputDecoration(
-          //           fillColor: Colors.black,
-          //           prefixIcon: Container(
-          //             padding: const EdgeInsets.all(10),
-          //             child: const Icon(Icons.calendar_today,
-          //                 size: 20, color: Colors.white),
-          //           ),
-          //           focusedBorder: InputBorder.none,
-          //           contentPadding: const EdgeInsets.only(top: 15, right: 10),
-          //           filled: true,
-          //           isDense: true,
-          //           hintText: current,
-          //           hintStyle: const TextStyle(
-          //               fontFamily: "Poppins",
-          //               fontSize: fontSizeRegular,
-          //               color: Colors.white),
-          //         ),
-          //       ),
-          //     )
-          //   ],
-          // ),
           ListSalesScreen(),
         ],
-      ),
-    );
-  }
-
-  Future calendar(String current) async {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: TextFormField(
-        onTap: () async {
-          await fechaModal(context).then((value) {
-            if (value != null) {
-              setState(() {
-                _dateController.text = DateFormat('dd-MM-yyyy').format(value);
-              });
-              //     // getNacionalByDate(context, value.toString());
-            }
-          });
-        },
-        style: const TextStyle(
-          fontFamily: "Poppins",
-          fontSize: fontSizeRegular,
-          color: Colors.white,
-        ),
-        controller: _dateController,
-        readOnly: true,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.datetime,
-        decoration: InputDecoration(
-          fillColor: Colors.black,
-          prefixIcon: Container(
-            padding: const EdgeInsets.all(10),
-            child:
-                const Icon(Icons.calendar_today, size: 20, color: Colors.white),
-          ),
-          focusedBorder: InputBorder.none,
-          contentPadding: const EdgeInsets.only(top: 15, right: 10),
-          filled: true,
-          isDense: true,
-          hintText: current,
-          hintStyle: const TextStyle(
-              fontFamily: "Poppins",
-              fontSize: fontSizeRegular,
-              color: Colors.white),
-        ),
       ),
     );
   }

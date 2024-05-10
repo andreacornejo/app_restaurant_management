@@ -90,6 +90,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               padding: const EdgeInsets.only(bottom: 5),
               unselectedLabelColor: Colors.black,
               indicatorSize: TabBarIndicatorSize.label,
+              labelColor: Colors.white,
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: focusColor,

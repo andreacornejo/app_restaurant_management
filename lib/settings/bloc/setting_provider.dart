@@ -57,10 +57,25 @@ class SettingsProvider with ChangeNotifier {
   Future<void> updateCategory(String id, String name, bool status) async {
     try {
       loadingCategories = true;
-      await _db
-          .collection("Categories")
-          .doc(id)
-          .update(CategoryModel(id: id, name: name, status: status).toJson());
+      // Obtener la categoría anterior
+      final res = await _db.collection("Categories").doc(id).get();
+
+      {
+        String oldName = res.data()?['name'];
+        await _db
+            .collection("Categories")
+            .doc(id)
+            .update(CategoryModel(id: id, name: name, status: status).toJson());
+
+        var listProducts = await _db
+            .collection("Product")
+            .where("category", isEqualTo: oldName)
+            .get();
+        for (var product in listProducts.docs) {
+          await product.reference.update({"category": name});
+        }
+      }
+
       loadingCategories = false;
     } catch (e) {
       if (kDebugMode) {
@@ -87,6 +102,7 @@ class SettingsProvider with ChangeNotifier {
   List<EmployeeModel> _listEmployees = [];
   String _name = '';
   String _rol = '';
+  bool _status = false;
   bool loadingEmployees = false;
 
   List<EmployeeModel> get listEmployees => _listEmployees;
@@ -107,6 +123,12 @@ class SettingsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool get status => _status;
+  set status(bool state) {
+    _status = state;
+    notifyListeners();
+  }
+
   //metodo para obtener datos del usuario
   Future<void> userData(String email) async {
     loadingEmployees = true;
@@ -115,6 +137,7 @@ class SettingsProvider with ChangeNotifier {
         listEmployees.where((element) => element.email == email).toList();
     name = user[0].name;
     rol = user[0].rol;
+    status = user[0].status;
     loadingEmployees = false;
   }
 
