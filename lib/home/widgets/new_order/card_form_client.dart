@@ -185,12 +185,15 @@ class _CardFormClientState extends State<CardFormClient> {
             margin: const EdgeInsets.only(bottom: 10),
             child: TextFormField(
               controller: _cashController,
-              // initialValue: order.cash.toString(),
               enabled: false,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.right,
-              decoration: const InputDecoration(
-                prefixIcon: Row(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                prefixIcon: const Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Text('Bs.', style: textStyleItem)],

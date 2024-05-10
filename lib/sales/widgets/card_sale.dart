@@ -1,22 +1,14 @@
+import 'package:app_restaurant_management/home/models/order_model.dart';
 import 'package:app_restaurant_management/sales/screens/detail_sale_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
 
 class CardSale extends StatelessWidget {
-  final String id;
-  final String total;
-  final String nameSale;
-  final String typeSale;
-  final String description;
-  const CardSale({
-    Key? key,
-    required this.id,
-    required this.total,
-    required this.nameSale,
-    required this.typeSale,
-    required this.description,
-  }) : super(key: key);
+  final OrderModel order;
+  final int index;
+  const CardSale({Key? key, required this.order, required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +20,13 @@ class CardSale extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(CupertinoPageRoute(
                 builder: (context) => const DetailSaleScreen(
-                      typeSale: 'purchase',
+                      typeSale: 'sale',
                     )));
           },
           child: Column(
             children: [
               Visibility(
-                visible: typeSale == 'ingreso',
+                // visible: typeSale == 'ingreso',
                 child: Column(
                   children: [
                     Container(
@@ -44,7 +36,7 @@ class CardSale extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Orden #$id',
+                            '#${index.toString().padLeft(4, '0')}',
                             style: const TextStyle(
                               letterSpacing: 0.75,
                               fontFamily: "Poppins",
@@ -54,7 +46,7 @@ class CardSale extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '+ Bs. $total',
+                            '+ Bs. ${order.total.toString()}',
                             style: const TextStyle(
                               fontFamily: "Work Sans",
                               fontWeight: FontWeight.w700,
@@ -71,55 +63,61 @@ class CardSale extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(5),
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        description,
-                        style: const TextStyle(
-                            letterSpacing: 0.75,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w400,
-                            fontSize: fontSizeRegular,
-                            color: fontGris),
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var item in order.products!)
+                            Text(
+                              '${item.quantity}X ${item.product.nameProduct}',
+                              style: const TextStyle(
+                                  letterSpacing: 0.75,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: fontSizeRegular,
+                                  color: fontGris),
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-              Visibility(
-                visible: typeSale == 'egreso',
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 2 * 1.2 - 15,
-                      child: Text(
-                        nameSale,
-                        style: const TextStyle(
-                            letterSpacing: 0.75,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w600,
-                            fontSize: fontSizeRegular,
-                            color: redColor),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 4,
-                      child: Text(
-                        '- Bs. $total',
-                        style: const TextStyle(
-                            fontFamily: "Work Sans",
-                            fontWeight: FontWeight.w700,
-                            fontSize: fontSizeTitle,
-                            color: redColor),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Visibility(
+              //   visible: typeSale == 'egreso',
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     mainAxisSize: MainAxisSize.max,
+              //     children: [
+              //       SizedBox(
+              //         width: MediaQuery.of(context).size.width / 2 * 1.2 - 15,
+              //         child: Text(
+              //           nameSale,
+              //           style: const TextStyle(
+              //               letterSpacing: 0.75,
+              //               fontFamily: "Poppins",
+              //               fontWeight: FontWeight.w600,
+              //               fontSize: fontSizeRegular,
+              //               color: redColor),
+              //           maxLines: 2,
+              //           overflow: TextOverflow.ellipsis,
+              //         ),
+              //       ),
+              //       SizedBox(
+              //         width: MediaQuery.of(context).size.width / 4,
+              //         child: Text(
+              //           '- Bs. $total',
+              //           style: const TextStyle(
+              //               fontFamily: "Work Sans",
+              //               fontWeight: FontWeight.w700,
+              //               fontSize: fontSizeTitle,
+              //               color: redColor),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           )),
     );

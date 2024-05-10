@@ -1,13 +1,22 @@
+import 'package:app_restaurant_management/sales/bloc/sales_provider.dart';
+import 'package:app_restaurant_management/stock/bloc/stock_provider.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
 
 class CardTotal extends StatelessWidget {
+  final SalesProvider salesProvider;
+  final StockProvider stockProvider;
   const CardTotal({
+    required this.salesProvider,
+    required this.stockProvider,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final incomes = salesProvider.incomes;
+    final expenses = stockProvider.expenses;
+    final balance = salesProvider.balance;
     return Container(
       height: 80,
       padding: const EdgeInsets.all(5),
@@ -17,11 +26,11 @@ class CardTotal extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          columnTotal(context, 'Ingresos', '2200', greenColor),
+          columnTotal(context, 'Ingresos', incomes.toString(), greenColor),
           const VerticalDivider(thickness: 2),
-          columnTotal(context, 'Egresos', '1000', redColor),
+          columnTotal(context, 'Egresos', expenses.toString(), redColor),
           const VerticalDivider(thickness: 2),
-          columnTotal(context, 'Balance', '924', Colors.black),
+          columnTotal(context, 'Balance', balance.toString(), Colors.black),
         ],
       ),
     );

@@ -48,7 +48,7 @@ class _SectionCardProductState extends State<SectionCardProduct> {
             borderRadius: BorderRadius.circular(8.0),
             child: FadeInImage(
               width: sizeW / 3 * 1.6,
-              height: (sizeW / 3) - 3,
+              height: (sizeW / 3) - 15,
               fit: BoxFit.cover,
               placeholder: const AssetImage("assets/img/loader-food.gif"),
               image: NetworkImage(widget.product.urlPhoto),

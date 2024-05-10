@@ -117,6 +117,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                         }
                         if (context.mounted) {
                           Navigator.of(context).pop(true);
+                          Navigator.of(context).pop(true);
                         }
                       }),
             ],

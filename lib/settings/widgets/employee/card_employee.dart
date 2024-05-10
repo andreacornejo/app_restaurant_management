@@ -41,7 +41,7 @@ class CardEmployee extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width / 4 + 10,
+                    width: MediaQuery.of(context).size.width / 4 + 20,
                     child: Text(
                       employee.rol,
                       style: TextStyle(

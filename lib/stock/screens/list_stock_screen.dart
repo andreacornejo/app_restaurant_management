@@ -1,9 +1,8 @@
-import 'package:app_restaurant_management/constans.dart';
 import 'package:app_restaurant_management/stock/bloc/stock_provider.dart';
 import 'package:app_restaurant_management/stock/widgets/card_stock.dart';
+import 'package:app_restaurant_management/utils/tag_date.dart';
 import 'package:app_restaurant_management/widgets/empty_content.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ProductsStockScreen extends StatefulWidget {
   final StockProvider provider;
@@ -17,24 +16,6 @@ class ProductsStockScreen extends StatefulWidget {
 }
 
 class _ProductsStockScreenState extends State<ProductsStockScreen> {
-  //Fecha
-  Container tagDate(int index) {
-    DateTime fecha = widget.provider.listStock[index].date!;
-    String date = DateFormat("EEEEE dd MMMM", "es").format(fecha);
-    String today = DateFormat("EEEEE dd MMMM", "es").format(DateTime.now());
-    if (fecha.year < DateTime.now().year) {
-      date = DateFormat("EEEEE dd MMMM yyyy", "es").format(fecha);
-    }
-    return Container(
-      alignment: Alignment.topLeft,
-      margin: const EdgeInsets.all(10),
-      child: Text(
-        date == today ? 'Hoy' : date,
-        style: const TextStyle(fontSize: 16, color: fontGris),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return widget.provider.loadingStock
@@ -53,6 +34,22 @@ class _ProductsStockScreenState extends State<ProductsStockScreen> {
                     padding: const EdgeInsets.all(10),
                     itemCount: widget.provider.listStock.length,
                     itemBuilder: (context, index) {
+                      // var list = widget.provider.listStock;
+                      // if (equalDate(list[index].date!,
+                      //     list[(index == 0) ? 0 : index - 1].date!)) {
+                      //   return Column(
+                      //     children: [
+                      //       tagDate(index),
+                      //       CardStock(
+                      //         stock: widget.provider.listStock[index],
+                      //       ),
+                      //     ],
+                      //   );
+                      // } else {
+                      //   CardStock(
+                      //     stock: widget.provider.listStock[index],
+                      //   );
+                      // }
                       var actual = widget.provider.listStock[index];
                       var anterior =
                           widget.provider.listStock[index == 0 ? 0 : index - 1];
@@ -64,7 +61,7 @@ class _ProductsStockScreenState extends State<ProductsStockScreen> {
                         if (index == 0) {
                           return Column(
                             children: [
-                              tagDate(index),
+                              tagDate(widget.provider.listStock[index].date!),
                               CardStock(
                                 stock: widget.provider.listStock[index],
                               ),
@@ -77,7 +74,7 @@ class _ProductsStockScreenState extends State<ProductsStockScreen> {
                       } else {
                         return Column(
                           children: [
-                            tagDate(index),
+                            tagDate(widget.provider.listStock[index].date!),
                             CardStock(
                               stock: widget.provider.listStock[index],
                             ),

@@ -1,9 +1,11 @@
 // import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
+import 'package:app_restaurant_management/constans.dart';
 import 'package:app_restaurant_management/home.dart';
 import 'package:app_restaurant_management/home/bloc/order_provider.dart';
 import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
 import 'package:app_restaurant_management/home/screens/sign_in.dart';
 import 'package:app_restaurant_management/menu/bloc/menu_provider.dart';
+import 'package:app_restaurant_management/sales/bloc/sales_provider.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:app_restaurant_management/stock/bloc/stock_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -48,6 +50,8 @@ class MyApp extends StatelessWidget {
             create: (context) => StockProvider()),
         ChangeNotifierProvider<OrderProvider>(
             create: (context) => OrderProvider()),
+        ChangeNotifierProvider<SalesProvider>(
+            create: (context) => SalesProvider()),
       ],
       child: MaterialApp(
         title: 'Restaurant Management',
@@ -61,9 +65,39 @@ class MyApp extends StatelessWidget {
           Locale('en', 'US'),
         ],
         theme: ThemeData(
-          primarySwatch: Colors.red,
+          checkboxTheme: CheckboxThemeData(
+            checkColor: MaterialStateProperty.resolveWith(
+              (states) {
+                if (states.contains(MaterialState.selected)) {
+                  return Colors.red;
+                }
+                return null;
+              },
+            ),
+            side: MaterialStateBorderSide.resolveWith(
+              (states) {
+                if (states.contains(MaterialState.selected)) {
+                  return const BorderSide(color: Colors.red);
+                }
+                return null;
+              },
+            ),
+          ),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Colors.red,
+            selectionColor: Colors.red[200],
+            selectionHandleColor: Colors.red[400],
+          ),
+          progressIndicatorTheme:
+              const ProgressIndicatorThemeData(color: Colors.red),
+          colorScheme: const ColorScheme.light(
+            background: Colors.white, // Cambiar a color blanco
+            primary: cardColor,
+            surface: cardColor,
+            onPrimary: fontBlack,
+            onSurface: fontBlack,
+          ),
           inputDecorationTheme: InputDecorationTheme(
-            border: const OutlineInputBorder(),
             contentPadding: const EdgeInsets.all(9),
             fillColor: Colors.white,
             filled: true,
@@ -83,12 +117,18 @@ class MyApp extends StatelessWidget {
             focusedBorder: borderInput(),
             errorBorder: borderInput(color: Colors.red),
           )),
-          // radioTheme: const RadioThemeData(
-          //   visualDensity: VisualDensity(
-          //     horizontal: VisualDensity.minimumDensity,
-          //     vertical: VisualDensity.minimumDensity,
-          //   ),
-          // ),
+          radioTheme: RadioThemeData(
+            visualDensity: const VisualDensity(
+              horizontal: VisualDensity.minimumDensity,
+              vertical: VisualDensity.minimumDensity,
+            ),
+            fillColor: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return Colors.red;
+              }
+              return null;
+            }),
+          ),
         ),
         home: const ValidateToken(),
       ),
@@ -104,60 +144,55 @@ class ValidateToken extends StatefulWidget {
 }
 
 class _ValidateTokenState extends State<ValidateToken> {
-  // bool status = true;
-
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // final provider = Provider.of<SettingsProvider>(context, listen: false);
-      // final user = FirebaseAuth.instance.currentUser;
-      // if (user != null) {
-      //   provider.getAllEmployees();
-      //   final list = provider.listEmployees;
-      //   final id =
-      //       list.where((element) => element.email == user.email).toList();
-      // status = id[0].status;
-      // }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _loadingData();
+      await _validateStatus();
     });
-    _loadingData();
     super.initState();
   }
 
   _loadingData() async {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      var authProvider =
-          Provider.of<SignInSocialNetworkInProvider>(context, listen: false);
+    var authProvider =
+        Provider.of<SignInSocialNetworkInProvider>(context, listen: false);
 
-      authProvider.loadingValidate = true;
-      var preferencias = await SharedPreferences.getInstance();
+    authProvider.loadingValidate = true;
+    var preferencias = await SharedPreferences.getInstance();
 
-      if (preferencias.getString("uid_user") != null) {
-        await authProvider.validateToken();
-      }
-      authProvider.loadingValidate = false;
-      if (kDebugMode) {
-        print("========Termino=======");
-      }
-      if (kDebugMode) {
-        print(authProvider.loadingValidate);
-      }
-    });
+    if (preferencias.getString("uid_user") != null) {
+      await authProvider.validateToken();
+    }
+    authProvider.loadingValidate = false;
+    if (kDebugMode) {
+      // print("========Termino=======");
+    }
+    if (kDebugMode) {
+      // print(authProvider.loadingValidate);
+    }
+  }
+
+  _validateStatus() async {
+    var employee = Provider.of<SettingsProvider>(context, listen: false);
+    var preferencias = await SharedPreferences.getInstance();
+    await employee.userData(preferencias.getString('email')!);
   }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<SignInSocialNetworkInProvider>(context);
+    final employee = Provider.of<SettingsProvider>(context);
     if (authProvider.loadingValidate) {
       return _showLoading(context);
     } else {
       if (authProvider.isAuth == false) {
         return const Login();
       } else {
-        // if (status) {
-        return const Home();
-        // } else {
-        // return const Login();
-        // }
+        if (employee.status) {
+          return const Home();
+        } else {
+          return const Login();
+        }
       }
     }
   }

@@ -1,18 +1,19 @@
 import 'package:app_restaurant_management/constans.dart';
+import 'package:app_restaurant_management/sales/bloc/sales_provider.dart';
+import 'package:app_restaurant_management/stock/bloc/stock_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class DatePickerInput extends StatefulWidget {
-  final String label;
   final TextEditingController controller;
-  final Function(DateTime?)? changedFunction;
-  final Future<DateTime?> Function(BuildContext, DateTime?) showPickerFunction;
+  final String typeDate;
+  final DateTime existingDateStart;
   const DatePickerInput({
     Key? key,
-    required this.label,
     required this.controller,
-    required this.changedFunction,
-    required this.showPickerFunction,
+    required this.typeDate,
+    required this.existingDateStart,
   }) : super(key: key);
 
   @override
@@ -20,20 +21,28 @@ class DatePickerInput extends StatefulWidget {
 }
 
 class _DatePickerInputState extends State<DatePickerInput> {
-  Future<dynamic> fechaModal(BuildContext context) async {
+  Future<dynamic> modalDate(BuildContext context) async {
+    DateTime initialDate;
+    try {
+      initialDate = DateFormat('dd-MM-yyyy').parse(widget.controller.text);
+    } catch (e) {
+      initialDate = DateTime.now();
+    }
     return await showDatePicker(
+      locale: const Locale('es', 'ES'),
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
+      confirmText: 'Aceptar',
+      initialDate: initialDate,
+      firstDate: widget.typeDate == 'dateEnd'
+          ? widget.existingDateStart
+          : DateTime(2015),
       lastDate: DateTime.now(),
       builder: (context, child) => Theme(
-        data: ThemeData().copyWith(
-          colorScheme: const ColorScheme.dark(
-            primary: primaryColor,
-            surface: primaryColor,
+        data: ThemeData(
+          colorScheme: const ColorScheme.light(
+            primary: Colors.red,
             onPrimary: Colors.white,
-            onSurface: Colors.black,
           ),
         ),
         child: child!,
@@ -41,8 +50,28 @@ class _DatePickerInputState extends State<DatePickerInput> {
     );
   }
 
+  void onDateSelected(SalesProvider salesProvider,
+      TextEditingController controller, DateTime selectedDate) async {
+    final stockProvider = Provider.of<StockProvider>(context, listen: false);
+    await stockProvider.clearListStock();
+    await salesProvider.clearListSales();
+    if (widget.typeDate == 'dateStart') {
+      salesProvider.dateStart = DateFormat("yyyy-MM-dd").format(selectedDate);
+      stockProvider.dateStart = DateFormat("yyyy-MM-dd").format(selectedDate);
+    } else if (widget.typeDate == 'dateEnd') {
+      salesProvider.dateEnd = DateFormat("yyyy-MM-dd").format(selectedDate);
+      stockProvider.dateEnd = DateFormat("yyyy-MM-dd").format(selectedDate);
+    }
+    await salesProvider.getAllSalesByDate();
+    await stockProvider.getAllStocksByDate();
+    salesProvider.getTotalIncomes();
+    var expenses = stockProvider.getTotalExpenses();
+    salesProvider.getBalance(expenses);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<SalesProvider>(context);
     DateTime now = DateTime.now();
     String current = DateFormat('dd-MM-yyyy').format(now);
     return Container(
@@ -50,12 +79,12 @@ class _DatePickerInputState extends State<DatePickerInput> {
       width: MediaQuery.of(context).size.width * 0.5 - 20,
       child: TextFormField(
         onTap: () async {
-          await fechaModal(context).then((value) {
+          await modalDate(context).then((value) {
             if (value != null) {
               setState(() {
                 widget.controller.text = DateFormat('dd-MM-yyyy').format(value);
+                onDateSelected(provider, widget.controller, value);
               });
-              //     // getNacionalByDate(context, value.toString());
             }
           });
         },
@@ -72,10 +101,16 @@ class _DatePickerInputState extends State<DatePickerInput> {
           fillColor: Colors.black,
           prefixIcon: Container(
             padding: const EdgeInsets.all(10),
-            child:
-                const Icon(Icons.calendar_today, size: 20, color: Colors.white),
+            child: const Icon(
+              Icons.calendar_today,
+              size: 20,
+              color: Colors.white,
+            ),
           ),
-          focusedBorder: InputBorder.none,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Colors.black),
+          ),
           contentPadding: const EdgeInsets.only(top: 15, right: 10),
           filled: true,
           isDense: true,

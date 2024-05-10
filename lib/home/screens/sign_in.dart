@@ -117,7 +117,7 @@ class _LoginState extends State<Login> {
               suffixIcon: IconButton(
                 icon: Icon(
                   _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
+                  color: Colors.red,
                 ),
                 onPressed: () {
                   setState(() {
@@ -200,12 +200,8 @@ class ButtonSignIn extends StatelessWidget {
                   await provider.emailAuth(
                       emailController.text, passController.text);
                   if (provider.isAuth) {
-                    await employee.getAllEmployees();
-                    if (employee.listEmployees
-                        .where(
-                            (element) => element.email == emailController.text)
-                        .toList()[0]
-                        .status) {
+                    await employee.userData(emailController.text);
+                    if (employee.status) {
                       if (context.mounted) {
                         Navigator.pushReplacement(
                             context,
@@ -213,7 +209,6 @@ class ButtonSignIn extends StatelessWidget {
                                 builder: (context) => const Home()));
                       }
                     } else {
-                      // print("Usuario incorrecto");
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                             content: Text(
@@ -221,7 +216,6 @@ class ButtonSignIn extends StatelessWidget {
                       }
                     }
                   } else {
-                    // print("Usuario incorrecto");
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text(

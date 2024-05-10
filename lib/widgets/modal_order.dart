@@ -24,8 +24,7 @@ class ModalOrder extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          margin:
-              const EdgeInsets.only(bottom: 15, top: 15, right: 10, left: 10),
+          margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           child: Text(
             message,
             textAlign: TextAlign.center,
@@ -43,8 +42,7 @@ class ModalOrder extends StatelessWidget {
         Visibility(
           visible: secondMessage != '',
           child: Container(
-            margin:
-                const EdgeInsets.only(bottom: 15, top: 15, left: 55, right: 5),
+            margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
             child: Text(
               secondMessage,
               textAlign: TextAlign.center,
