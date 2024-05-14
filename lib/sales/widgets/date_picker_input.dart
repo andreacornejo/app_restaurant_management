@@ -7,13 +7,9 @@ import 'package:provider/provider.dart';
 
 class DatePickerInput extends StatefulWidget {
   final TextEditingController controller;
-  final String typeDate;
-  final DateTime existingDateStart;
   const DatePickerInput({
     Key? key,
     required this.controller,
-    required this.typeDate,
-    required this.existingDateStart,
   }) : super(key: key);
 
   @override
@@ -22,21 +18,12 @@ class DatePickerInput extends StatefulWidget {
 
 class _DatePickerInputState extends State<DatePickerInput> {
   Future<dynamic> modalDate(BuildContext context) async {
-    DateTime initialDate;
-    try {
-      initialDate = DateFormat('dd-MM-yyyy').parse(widget.controller.text);
-    } catch (e) {
-      initialDate = DateTime.now();
-    }
-    return await showDatePicker(
+    return await showDateRangePicker(
       locale: const Locale('es', 'ES'),
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       context: context,
       confirmText: 'Aceptar',
-      initialDate: initialDate,
-      firstDate: widget.typeDate == 'dateEnd'
-          ? widget.existingDateStart
-          : DateTime(2015),
+      firstDate: DateTime(2015),
       lastDate: DateTime.now(),
       builder: (context, child) => Theme(
         data: ThemeData(
@@ -50,18 +37,15 @@ class _DatePickerInputState extends State<DatePickerInput> {
     );
   }
 
-  void onDateSelected(SalesProvider salesProvider,
-      TextEditingController controller, DateTime selectedDate) async {
+  void onDateSelected(
+      SalesProvider salesProvider, DateTime startDate, DateTime endDate) async {
     final stockProvider = Provider.of<StockProvider>(context, listen: false);
     await stockProvider.clearListStock();
     await salesProvider.clearListSales();
-    if (widget.typeDate == 'dateStart') {
-      salesProvider.dateStart = DateFormat("yyyy-MM-dd").format(selectedDate);
-      stockProvider.dateStart = DateFormat("yyyy-MM-dd").format(selectedDate);
-    } else if (widget.typeDate == 'dateEnd') {
-      salesProvider.dateEnd = DateFormat("yyyy-MM-dd").format(selectedDate);
-      stockProvider.dateEnd = DateFormat("yyyy-MM-dd").format(selectedDate);
-    }
+    salesProvider.dateStart = DateFormat("yyyy-MM-dd").format(startDate);
+    stockProvider.dateStart = DateFormat("yyyy-MM-dd").format(startDate);
+    salesProvider.dateEnd = DateFormat("yyyy-MM-dd").format(endDate);
+    stockProvider.dateEnd = DateFormat("yyyy-MM-dd").format(endDate);
     await salesProvider.getAllSalesByDate();
     await stockProvider.getAllStocksByDate();
     salesProvider.getTotalIncomes();
@@ -76,14 +60,16 @@ class _DatePickerInputState extends State<DatePickerInput> {
     String current = DateFormat('dd-MM-yyyy').format(now);
     return Container(
       margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-      width: MediaQuery.of(context).size.width * 0.5 - 20,
+      width: MediaQuery.of(context).size.width * 0.8 - 20,
       child: TextFormField(
         onTap: () async {
           await modalDate(context).then((value) {
             if (value != null) {
               setState(() {
-                widget.controller.text = DateFormat('dd-MM-yyyy').format(value);
-                onDateSelected(provider, widget.controller, value);
+                final dateController =
+                    "${DateFormat("dd-MM-yyyy").format(value.start)}  -  ${DateFormat("dd-MM-yyyy").format(value.end)}";
+                widget.controller.text = dateController;
+                onDateSelected(provider, value.start, value.end);
               });
             }
           });

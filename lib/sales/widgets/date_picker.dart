@@ -26,26 +26,8 @@ class _DatePickerState extends State<DatePicker> {
         children: [
           Container(
             padding: const EdgeInsets.only(top: 2, bottom: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                DatePickerInput(
-                  controller: dateStart,
-                  typeDate: 'dateStart',
-                  existingDateStart: dateStart.text.isEmpty
-                      ? DateTime.now()
-                      : DateFormat('dd-MM-yyyy').parse(dateStart.text),
-                ),
-                DatePickerInput(
-                  controller: dateEnd,
-                  typeDate: 'dateEnd',
-                  existingDateStart: dateStart.text.isEmpty
-                      ? DateTime.now()
-                      : DateFormat('dd-MM-yyyy').parse(dateStart.text),
-                ),
-              ],
+            child: DatePickerInput(
+              controller: dateStart,
             ),
           ),
         ],
