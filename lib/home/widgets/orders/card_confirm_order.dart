@@ -44,7 +44,7 @@ class _CardConfirmState extends State<CardConfirm> {
         SizedBox(
             width: MediaQuery.of(context).size.width / 2,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   Icons.schedule,
@@ -65,7 +65,9 @@ class _CardConfirmState extends State<CardConfirm> {
                             ? '${StatusTime.parse(widget.order.dateTime!)} - En Curso'
                             : widget.statusOrder == 'send'
                                 ? '${StatusTime.parse(widget.order.dateTime!)} - Entregado'
-                                : '${StatusTime.parse(widget.order.dateTime!)} - Cancelado',
+                                : widget.statusOrder == 'received'
+                                    ? '${StatusTime.parse(widget.order.dateTime!)} - Recibido'
+                                    : '${StatusTime.parse(widget.order.dateTime!)} - Cancelado',
                     style: widget.statusOrder == 'pending' ||
                             widget.statusOrder == 'cancel'
                         ? textStyleLabelRed
@@ -74,6 +76,7 @@ class _CardConfirmState extends State<CardConfirm> {
                             : textStyleLabelGreen,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.right,
                   ),
                 ),
               ],

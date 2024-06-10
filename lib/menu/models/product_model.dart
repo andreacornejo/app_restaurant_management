@@ -17,6 +17,7 @@ class ProductModel {
   String urlPhoto;
   double price;
   bool status;
+  double? promotionalPrice;
 
   ProductModel({
     required this.id,
@@ -26,6 +27,7 @@ class ProductModel {
     required this.urlPhoto,
     required this.price,
     required this.status,
+    this.promotionalPrice,
   });
 
   ProductModel copyWith({
@@ -36,6 +38,7 @@ class ProductModel {
     String? urlPhoto,
     double? price,
     bool? status,
+    double? promotionalPrice,
   }) =>
       ProductModel(
         id: id ?? this.id,
@@ -45,6 +48,7 @@ class ProductModel {
         urlPhoto: urlPhoto ?? this.urlPhoto,
         price: price ?? this.price,
         status: status ?? this.status,
+        promotionalPrice: promotionalPrice ?? this.promotionalPrice,
       );
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
@@ -55,6 +59,7 @@ class ProductModel {
         urlPhoto: json["urlPhoto"],
         price: json["price"]?.toDouble(),
         status: json["status"],
+        promotionalPrice: json["promotionalPrice"]?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,5 +70,6 @@ class ProductModel {
         "urlPhoto": urlPhoto,
         "price": price,
         "status": status,
+        "promotionalPrice": promotionalPrice,
       };
 }

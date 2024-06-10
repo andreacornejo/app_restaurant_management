@@ -65,6 +65,7 @@ class MenuProvider with ChangeNotifier {
       loadingProduct = true;
       var res = await _db.collection("Product").get();
       var info = res.docs.map((e) => ProductModel.fromJson(e.data())).toList();
+      info.sort((a, b) => a.nameProduct.compareTo(b.nameProduct));
       listProduct = info;
       loadingProduct = false;
     } on Exception catch (e) {

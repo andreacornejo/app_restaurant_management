@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 
 Container tagDate(DateTime dateList) {
   // DateTime fecha = widget.provider.listStock[index].date!;
-  String date = DateFormat("EEEEE dd MMMM", "es").format(dateList);
-  String today = DateFormat("EEEEE dd MMMM", "es").format(DateTime.now());
+  String date = DateFormat("EEEE dd MMMM", "es").format(dateList);
+  String today = DateFormat("EEEE dd MMMM", "es").format(DateTime.now());
   if (dateList.year < DateTime.now().year) {
-    date = DateFormat("EEEEE dd MMMM yyyy", "es").format(dateList);
+    date = DateFormat("EEEE dd MMMM yyyy", "es").format(dateList);
   }
   return Container(
     alignment: Alignment.topLeft,

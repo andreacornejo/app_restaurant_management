@@ -1,5 +1,5 @@
 import 'package:app_restaurant_management/constans.dart';
-import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
+import 'package:app_restaurant_management/home/bloc/sign_in_social_networks.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -227,8 +227,8 @@ class ButtonSignIn extends StatelessWidget {
                 }
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                backgroundColor: WidgetStateProperty.all<Color>(primaryColor),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),

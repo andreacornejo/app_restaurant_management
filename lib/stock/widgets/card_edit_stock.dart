@@ -1,3 +1,4 @@
+import 'package:app_restaurant_management/stock/widgets/date_picker_stock.dart';
 import 'package:flutter/material.dart';
 import '../../../constans.dart';
 
@@ -9,6 +10,7 @@ class CardEditStock extends StatefulWidget {
   final TextEditingController descriptionController;
   final TextEditingController priceController;
   final TextEditingController quantityController;
+  final TextEditingController expirationDateController;
   const CardEditStock({
     Key? key,
     required this.nameController,
@@ -16,6 +18,7 @@ class CardEditStock extends StatefulWidget {
     required this.descriptionController,
     required this.priceController,
     required this.quantityController,
+    required this.expirationDateController,
   }) : super(key: key);
 
   @override
@@ -120,6 +123,28 @@ class _CardEditStockState extends State<CardEditStock> {
     );
   }
 
+  expirationDate() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 2 * 0.8,
+            child: titleCardForm('Fecha de caducidad (prod perecederos)'),
+          ),
+          SizedBox(
+              width: MediaQuery.of(context).size.width / 2 * 0.8,
+              child:
+                  DatePickerStock(controller: widget.expirationDateController)),
+          // TextFormField(
+          //   controller: widget.descriptionController,
+          // ),
+        ],
+      ),
+    );
+  }
+
   /// Precio
   SizedBox price() {
     return SizedBox(
@@ -181,6 +206,7 @@ class _CardEditStockState extends State<CardEditStock> {
           nameProduct(),
           typeProduct(),
           description(),
+          expirationDate(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

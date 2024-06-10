@@ -1,4 +1,5 @@
 import 'package:app_restaurant_management/home/models/order_model.dart';
+import 'package:app_restaurant_management/home/screens/new_order/detail_order_screen.dart';
 import 'package:app_restaurant_management/sales/screens/detail_sale_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,14 @@ class CardSale extends StatelessWidget {
       decoration: boxShadow,
       child: InkWell(
           onTap: () {
-            Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) => const DetailSaleScreen(
-                      typeSale: 'sale',
-                    )));
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (context) => DetailOrderScreen(),
+                // const DetailSaleScreen(
+                //   typeSale: 'sale',
+                // ),
+              ),
+            );
           },
           child: Column(
             children: [

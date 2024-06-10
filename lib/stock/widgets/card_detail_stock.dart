@@ -1,5 +1,6 @@
 import 'package:app_restaurant_management/stock/models/stock_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../constans.dart';
 
 class CardDetailStock extends StatefulWidget {
@@ -22,6 +23,21 @@ class _CardDetailStockState extends State<CardDetailStock> {
       child: Text(
         widget.stock.type,
         style: textStyleLabelOrange,
+        textAlign: TextAlign.end,
+      ),
+    );
+  }
+
+  Container expirationDate() {
+    String date = widget.stock.expirationDate != null
+        ? DateFormat('dd/MM/yyyy').format(widget.stock.expirationDate!)
+        : '';
+    return Container(
+      width: MediaQuery.of(context).size.width - 30,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Text(
+        'Vto: $date',
+        style: textStyleSubItem,
         textAlign: TextAlign.end,
       ),
     );
@@ -72,6 +88,9 @@ class _CardDetailStockState extends State<CardDetailStock> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           typeProduct(),
+          Visibility(
+              visible: widget.stock.expirationDate != null,
+              child: expirationDate()),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

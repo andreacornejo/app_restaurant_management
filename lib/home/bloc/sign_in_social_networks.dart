@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
@@ -11,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SignInSocialNetworkInProvider extends ChangeNotifier {
   // final _googleSignIn = GoogleSignIn();
   bool _isAuth = false;
-  bool _loadingAuth = false;
+  bool _loadingAuth = true;
   bool _loadingValidate = true;
   bool _versionAppValidate = true;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,6 +21,7 @@ class SignInSocialNetworkInProvider extends ChangeNotifier {
   bool get loadingAuth => _loadingAuth;
   bool get loadingValidate => _loadingValidate;
   bool get versionAppValidate => _versionAppValidate;
+  StreamSubscription? _authSubscription;
 
   set versionAppValidate(bool state) {
     _versionAppValidate = state;
@@ -47,7 +49,11 @@ class SignInSocialNetworkInProvider extends ChangeNotifier {
   /// validar estado de token de usuario En firebase
   Future<void> validateToken() async {
     try {
-      FirebaseAuth.instance.authStateChanges().listen((user) async {
+      loadingAuth = true;
+      _authSubscription ??=
+          FirebaseAuth.instance.authStateChanges().listen((user) async {
+        print('User: ${user?.uid}');
+        print('Auth: $isAuth');
         if (user != null) {
           if (!isAuth) {
             if (kDebugMode) {
@@ -55,11 +61,13 @@ class SignInSocialNetworkInProvider extends ChangeNotifier {
                   "========================habilitando auth==========================");
             }
             var preferencias = await SharedPreferences.getInstance();
+            print('Preferencias: ${preferencias.getString("uid_user")}');
             if (preferencias.getString("uid_user") != null) {
               isAuth = true;
             }
           }
         }
+        loadingAuth = false;
       });
     } catch (e) {
       if (kDebugMode) {
@@ -185,5 +193,11 @@ class SignInSocialNetworkInProvider extends ChangeNotifier {
     var storage = await SharedPreferences.getInstance();
     await storage.clear();
     await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
   }
 }

@@ -3,6 +3,7 @@ import 'package:app_restaurant_management/stock/widgets/card_form_stock.dart';
 import 'package:app_restaurant_management/widgets/button_confirm.dart';
 import 'package:app_restaurant_management/widgets/modal_order.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
@@ -19,6 +20,7 @@ class _NewProductStockScreenState extends State<NewProductStockScreen> {
   final _description = TextEditingController();
   final _price = TextEditingController();
   final _quantity = TextEditingController();
+  final _expirationDate = TextEditingController();
   final _formStock = GlobalKey<FormState>();
 
   @override
@@ -28,6 +30,7 @@ class _NewProductStockScreenState extends State<NewProductStockScreen> {
     _description.dispose();
     _price.dispose();
     _quantity.dispose();
+    _expirationDate.dispose();
     super.dispose();
   }
 
@@ -63,6 +66,7 @@ class _NewProductStockScreenState extends State<NewProductStockScreen> {
                 typeController: _type,
                 priceController: _price,
                 quantityController: _quantity,
+                expirationDateController: _expirationDate,
               ),
               const SizedBox(height: 10),
               provider.loadingStock
@@ -75,14 +79,21 @@ class _NewProductStockScreenState extends State<NewProductStockScreen> {
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
                         if (_formStock.currentState!.validate()) {
+                          final expirationDate = _expirationDate.text.isNotEmpty
+                              ? DateFormat('dd/MM/yyyy')
+                                  .parse(_expirationDate.text)
+                              : null;
+
                           await provider.addStock(
-                              _name.text,
-                              _type.text,
-                              _description.text,
-                              double.parse(_price.text),
-                              _quantity.text != ''
-                                  ? int.parse(_quantity.text)
-                                  : 0);
+                            _name.text,
+                            _type.text,
+                            _description.text,
+                            double.parse(_price.text),
+                            _quantity.text != ''
+                                ? int.parse(_quantity.text)
+                                : 0,
+                            expirationDate,
+                          );
                           await provider.getAllStocks();
                           if (context.mounted) {
                             await showDialog(

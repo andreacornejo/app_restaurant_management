@@ -2,7 +2,7 @@
 import 'package:app_restaurant_management/constans.dart';
 import 'package:app_restaurant_management/home/home_admin.dart';
 import 'package:app_restaurant_management/home/bloc/order_provider.dart';
-import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
+import 'package:app_restaurant_management/home/bloc/sign_in_social_networks.dart';
 import 'package:app_restaurant_management/home/home_cashier.dart';
 import 'package:app_restaurant_management/home/home_chef.dart';
 import 'package:app_restaurant_management/home/home_delivery.dart';
@@ -12,7 +12,6 @@ import 'package:app_restaurant_management/sales/bloc/sales_provider.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:app_restaurant_management/stock/bloc/stock_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -68,18 +67,28 @@ class MyApp extends StatelessWidget {
           Locale('en', 'US'),
         ],
         theme: ThemeData(
+          tabBarTheme: TabBarTheme(
+            dividerHeight: 0,
+            unselectedLabelColor: Colors.black,
+            indicatorSize: TabBarIndicatorSize.label,
+            labelColor: Colors.white,
+            indicator: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: focusColor,
+            ),
+          ),
           checkboxTheme: CheckboxThemeData(
-            checkColor: MaterialStateProperty.resolveWith(
+            checkColor: WidgetStateProperty.resolveWith(
               (states) {
-                if (states.contains(MaterialState.selected)) {
+                if (states.contains(WidgetState.selected)) {
                   return Colors.red;
                 }
                 return null;
               },
             ),
-            side: MaterialStateBorderSide.resolveWith(
+            side: WidgetStateBorderSide.resolveWith(
               (states) {
-                if (states.contains(MaterialState.selected)) {
+                if (states.contains(WidgetState.selected)) {
                   return const BorderSide(color: Colors.red);
                 }
                 return null;
@@ -94,7 +103,7 @@ class MyApp extends StatelessWidget {
           progressIndicatorTheme:
               const ProgressIndicatorThemeData(color: Colors.red),
           colorScheme: const ColorScheme.light(
-            background: Colors.white, // Cambiar a color blanco
+            // background: Colors.white,
             primary: cardColor,
             surface: cardColor,
             onPrimary: fontBlack,
@@ -125,8 +134,8 @@ class MyApp extends StatelessWidget {
               horizontal: VisualDensity.minimumDensity,
               vertical: VisualDensity.minimumDensity,
             ),
-            fillColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
+            fillColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
                 return Colors.red;
               }
               return null;
@@ -167,18 +176,19 @@ class _ValidateTokenState extends State<ValidateToken> {
       await authProvider.validateToken();
     }
     authProvider.loadingValidate = false;
-    if (kDebugMode) {
-      // print("========Termino=======");
-    }
-    if (kDebugMode) {
-      // print(authProvider.loadingValidate);
-    }
   }
 
   _validateStatus() async {
     var employee = Provider.of<SettingsProvider>(context, listen: false);
+    final authProvider =
+        Provider.of<SignInSocialNetworkInProvider>(context, listen: false);
     var preferencias = await SharedPreferences.getInstance();
-    await employee.userData(preferencias.getString('email')!);
+    final email = preferencias.getString('email');
+    if (email != null) {
+      await employee.userData(email);
+    } else {
+      authProvider.loadingAuth = false;
+    }
   }
 
   @override
@@ -188,6 +198,9 @@ class _ValidateTokenState extends State<ValidateToken> {
     if (authProvider.loadingValidate) {
       return _showLoading(context);
     } else {
+      if (authProvider.loadingAuth) {
+        return _showLoading(context);
+      }
       if (authProvider.isAuth == false) {
         return const Login();
       } else {
@@ -205,7 +218,7 @@ class _ValidateTokenState extends State<ValidateToken> {
               return const HomeCashier();
           }
         } else {
-          return const Login();
+          return _showLoading(context);
         }
       }
     }

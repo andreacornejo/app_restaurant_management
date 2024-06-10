@@ -34,24 +34,23 @@ class _ButtonCancelState extends State<ButtonCancel>
     return TextButton(
         onPressed: widget.onPressed,
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(widget.color),
-          padding:
-              MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
-          overlayColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-            if (states.contains(MaterialState.focused)) {
+          backgroundColor: WidgetStateProperty.all<Color>(widget.color),
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
+          overlayColor:
+              WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+            if (states.contains(WidgetState.focused)) {
               return primaryColor;
             }
-            if (states.contains(MaterialState.hovered)) {
+            if (states.contains(WidgetState.hovered)) {
               return primaryColor;
             }
-            if (states.contains(MaterialState.pressed)) {
+            if (states.contains(WidgetState.pressed)) {
               return primaryColor;
             }
             return primaryColor;
             // Defer to the widget's default.
           }),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               side: const BorderSide(width: 1, color: focusColor),
               borderRadius: BorderRadius.circular(10.0),
