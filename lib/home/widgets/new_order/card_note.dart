@@ -29,6 +29,7 @@ class _CardNoteState extends State<CardNote> {
           margin: const EdgeInsets.only(bottom: 10),
           child: TextFormField(
             maxLines: 3,
+            maxLength: 150,
             controller: widget.note,
             decoration: const InputDecoration(
               hintText: 'Escribir nota...',

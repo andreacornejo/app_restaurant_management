@@ -6,7 +6,6 @@ import 'package:app_restaurant_management/home/screens/list_order/list_orders_sc
 import 'package:app_restaurant_management/home/widgets/home/float_button.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -89,15 +88,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
             backgroundColor: backgroundColor,
             title: banner(),
             bottom: TabBar(
-              indicatorWeight: 0,
-              padding: const EdgeInsets.only(bottom: 5),
-              unselectedLabelColor: Colors.black,
-              indicatorSize: TabBarIndicatorSize.label,
-              labelColor: Colors.white,
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: focusColor,
-              ),
               tabs: [
                 tabBarValue(text: 'Pendientes'),
                 tabBarValue(text: 'En curso'),

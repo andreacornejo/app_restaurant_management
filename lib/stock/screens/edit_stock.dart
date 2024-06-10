@@ -5,6 +5,7 @@ import 'package:app_restaurant_management/widgets/button_cancel.dart';
 import 'package:app_restaurant_management/widgets/button_confirm.dart';
 import 'package:app_restaurant_management/widgets/modal_order.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../constans.dart';
 
@@ -24,6 +25,7 @@ class _EditProductStockScreenState extends State<EditProductStockScreen> {
   final _description = TextEditingController();
   final _price = TextEditingController();
   final _quantity = TextEditingController();
+  final _expirationDate = TextEditingController();
   final _formStock = GlobalKey<FormState>();
 
   @override
@@ -34,6 +36,9 @@ class _EditProductStockScreenState extends State<EditProductStockScreen> {
       _description.text = widget.stock.description;
       _price.text = widget.stock.price.toString();
       _quantity.text = widget.stock.quantity.toString();
+      _expirationDate.text = widget.stock.expirationDate == null
+          ? ""
+          : DateFormat('dd/MM/yyyy').format(widget.stock.expirationDate!);
       _date = widget.stock.date!;
     });
     super.initState();
@@ -46,6 +51,7 @@ class _EditProductStockScreenState extends State<EditProductStockScreen> {
     _description.dispose();
     _price.dispose();
     _quantity.dispose();
+    _expirationDate.dispose();
     super.dispose();
   }
 
@@ -86,6 +92,7 @@ class _EditProductStockScreenState extends State<EditProductStockScreen> {
                   descriptionController: _description,
                   priceController: _price,
                   quantityController: _quantity,
+                  expirationDateController: _expirationDate,
                 ),
                 const SizedBox(height: 10),
                 provider.loadingStock
@@ -106,16 +113,24 @@ class _EditProductStockScreenState extends State<EditProductStockScreen> {
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
                               if (_formStock.currentState!.validate()) {
+                                final expirationDate =
+                                    _expirationDate.text.isNotEmpty
+                                        ? DateFormat('dd/MM/yyyy')
+                                            .parse(_expirationDate.text)
+                                        : null;
+
                                 await provider.updateStock(
-                                    widget.stock.id,
-                                    _date,
-                                    _name.text,
-                                    _type.text,
-                                    _description.text,
-                                    double.parse(_price.text),
-                                    _quantity.text != ''
-                                        ? int.parse(_quantity.text)
-                                        : 0);
+                                  widget.stock.id,
+                                  _date,
+                                  _name.text,
+                                  _type.text,
+                                  _description.text,
+                                  double.parse(_price.text),
+                                  _quantity.text != ''
+                                      ? int.parse(_quantity.text)
+                                      : 0,
+                                  expirationDate,
+                                );
                                 await provider.getAllStocks();
                                 if (context.mounted) {
                                   await showDialog(

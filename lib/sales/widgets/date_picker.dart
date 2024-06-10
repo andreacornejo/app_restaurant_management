@@ -1,6 +1,5 @@
 import 'package:app_restaurant_management/sales/widgets/date_picker_input.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class DatePicker extends StatefulWidget implements PreferredSizeWidget {
   const DatePicker({Key? key})

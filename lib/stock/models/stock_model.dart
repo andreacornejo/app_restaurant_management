@@ -16,6 +16,7 @@ class StockModel {
   String description;
   double price;
   int quantity;
+  DateTime? expirationDate;
   DateTime? date;
 
   StockModel({
@@ -25,6 +26,7 @@ class StockModel {
     required this.description,
     required this.price,
     required this.quantity,
+    this.expirationDate,
     this.date,
   });
 
@@ -35,6 +37,7 @@ class StockModel {
     String? description,
     double? price,
     int? quantity,
+    DateTime? expirationDate,
     DateTime? date,
   }) =>
       StockModel(
@@ -44,6 +47,7 @@ class StockModel {
         description: description ?? this.description,
         price: price ?? this.price,
         quantity: quantity ?? this.quantity,
+        expirationDate: expirationDate ?? this.expirationDate,
         date: date ?? this.date,
       );
 
@@ -54,6 +58,9 @@ class StockModel {
         description: json["description"],
         price: json["price"]?.toDouble(),
         quantity: json["quantity"],
+        expirationDate: json["expirationDate"] != null
+            ? DateTime.parse(json["expirationDate"])
+            : null,
         date: DateTime.parse(json["date"]),
       );
 
@@ -64,6 +71,7 @@ class StockModel {
         "description": description,
         "price": price,
         "quantity": quantity,
+        "expirationDate": expirationDate?.toIso8601String(),
         "date": date?.toIso8601String(),
       };
 }

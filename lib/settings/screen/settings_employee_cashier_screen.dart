@@ -1,5 +1,5 @@
 // import 'package:app_restaurant_management/home/screens/new_order/new_order_screen.dart';
-import 'package:app_restaurant_management/home/bloc/sing_in_social_networks.dart';
+import 'package:app_restaurant_management/home/bloc/sign_in_social_networks.dart';
 import 'package:app_restaurant_management/home/widgets/orders/modal_confirm.dart';
 import 'package:app_restaurant_management/settings/bloc/setting_provider.dart';
 import 'package:app_restaurant_management/settings/screen/model/settingsmodel.dart';

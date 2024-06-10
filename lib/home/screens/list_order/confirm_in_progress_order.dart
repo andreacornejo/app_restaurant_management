@@ -79,8 +79,9 @@ class _ConfirmOrderInProgressScreenState
                             context: context,
                             barrierDismissible: false,
                             builder: (BuildContext context) {
-                              return const ModalOrder(
-                                  message: 'Orden #001 rechazado',
+                              return ModalOrder(
+                                  message:
+                                      'Orden #${widget.index.toString().padLeft(4, '0')} rechazado',
                                   image: 'assets/img/order-cancel.svg');
                             },
                           );

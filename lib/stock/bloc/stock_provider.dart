@@ -59,7 +59,7 @@ class StockProvider with ChangeNotifier {
 
   //metodo para crear una nuevo gasto
   Future<void> addStock(String name, String type, String description,
-      double price, int quantity) async {
+      double price, int quantity, DateTime? expirationDate) async {
     var uuid = DateTime.now().microsecondsSinceEpoch.toString();
     try {
       loadingStock = true;
@@ -70,6 +70,7 @@ class StockProvider with ChangeNotifier {
               description: description,
               quantity: quantity,
               price: price,
+              expirationDate: expirationDate,
               date: DateTime.now())
           .toJson());
       loadingStock = false;
@@ -120,8 +121,15 @@ class StockProvider with ChangeNotifier {
   }
 
   //metodo para actualizar un gasto
-  Future<void> updateStock(String id, DateTime date, String name, String type,
-      String description, double price, int quantity) async {
+  Future<void> updateStock(
+      String id,
+      DateTime date,
+      String name,
+      String type,
+      String description,
+      double price,
+      int quantity,
+      DateTime? expirationDate) async {
     try {
       loadingStock = true;
       await _db.collection("Stock").doc(id).update(StockModel(
@@ -131,6 +139,7 @@ class StockProvider with ChangeNotifier {
               type: type,
               description: description,
               price: price,
+              expirationDate: expirationDate,
               quantity: quantity)
           .toJson());
       loadingStock = false;
